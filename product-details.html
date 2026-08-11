@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details - INFINITY</title>
+    <title>Product Details - INFINITY Total-Com Solutions</title>
+    <meta name="description" content="View product details, pricing, and specifications for INFINITY GPS tracking and fleet accessories.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://infinity-lbvn.onrender.com/product-details.html">
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="INFINITY Total-Com Solutions">
+    <meta property="og:title" content="Product Details - INFINITY Total-Com Solutions">
+    <meta property="og:description" content="View product details, pricing, and specifications for INFINITY GPS tracking and fleet accessories.">
+    <meta property="og:url" content="https://infinity-lbvn.onrender.com/product-details.html">
+    <meta property="og:image" content="https://infinity-lbvn.onrender.com/assets/images/infinity-logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Product Details - INFINITY Total-Com Solutions">
+    <meta name="twitter:description" content="View product details, pricing, and specifications for INFINITY GPS tracking and fleet accessories.">
+    <meta name="twitter:image" content="https://infinity-lbvn.onrender.com/assets/images/infinity-logo.png">
     <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/images/infinity-logo1.png">
     <link rel="stylesheet" href="mazen.css?v=20260603-team-ui">
@@ -366,7 +379,7 @@
     <main class="details-wrap is-details-loading">
         <div class="details-live">
         <section class="details-head">
-            <div class="details-media"><img id="product-image" src="" alt=""></div>
+            <div class="details-media"><img id="product-image" src="" alt="Product image"></div>
             <div class="details-summary">
                 <h1 id="product-name"></h1>
                 <p class="arabic" id="product-name-ar"></p>
@@ -584,13 +597,53 @@
             }
         }
 
+        function setMetaTag(attrName, attrValue, content) {
+            let el = document.head.querySelector(`meta[${attrName}="${attrValue}"]`);
+            if (!el) {
+                el = document.createElement('meta');
+                el.setAttribute(attrName, attrValue);
+                document.head.appendChild(el);
+            }
+            el.setAttribute('content', content);
+        }
+
+        function updateProductSeo() {
+            const name = product.name || 'Product';
+            const pageUrl = `https://infinity-lbvn.onrender.com/product-details.html?id=${encodeURIComponent(id)}`;
+            const imagePath = product.image || fallbackImage;
+            const absoluteImage = imagePath.startsWith('http')
+                ? imagePath
+                : `https://infinity-lbvn.onrender.com/${String(imagePath).replace(/^\/+/, '')}`;
+            const description = `${name} from INFINITY Total-Com Solutions. GPS and fleet solutions available in Egypt.`;
+
+            document.title = `${name} - INFINITY Total-Com Solutions`;
+
+            let canonical = document.head.querySelector('link[rel="canonical"]');
+            if (!canonical) {
+                canonical = document.createElement('link');
+                canonical.setAttribute('rel', 'canonical');
+                document.head.appendChild(canonical);
+            }
+            canonical.setAttribute('href', pageUrl);
+
+            setMetaTag('name', 'description', description);
+            setMetaTag('property', 'og:title', `${name} - INFINITY Total-Com Solutions`);
+            setMetaTag('property', 'og:description', description);
+            setMetaTag('property', 'og:url', pageUrl);
+            setMetaTag('property', 'og:image', absoluteImage);
+            setMetaTag('name', 'twitter:title', `${name} - INFINITY Total-Com Solutions`);
+            setMetaTag('name', 'twitter:description', description);
+            setMetaTag('name', 'twitter:image', absoluteImage);
+        }
+
         function applyProductToPage() {
             document.getElementById('product-name').textContent = product.name;
             document.getElementById('product-name-ar').textContent = product.arabicName || '';
             document.getElementById('product-price').textContent = `Price: EGP ${Number(product.price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             document.getElementById('product-install').textContent = `Installation: EGP ${Number(product.installation || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             imageEl.src = product.image || fallbackImage;
-            imageEl.alt = product.name;
+            imageEl.alt = product.name || 'Product image';
+            updateProductSeo();
             renderSpecs();
         }
 

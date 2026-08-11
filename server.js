@@ -85,6 +85,10 @@ app.use(express.static(__dirname, {
     etag: true,
     lastModified: true,
     setHeaders: (res, filePath) => {
+        const base = path.basename(filePath).toLowerCase();
+        if (base === "robots.txt" || base === "sitemap.xml") {
+            res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+        }
         if (filePath.endsWith(".html")) {
             res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
             res.setHeader("Pragma", "no-cache");

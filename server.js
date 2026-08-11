@@ -80,6 +80,34 @@ app.use(cors({
 app.use(bodyParser.json({ limit: "12mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "12mb" }));
 app.use(compression());
+
+// Public SEO files — must be registered before express.static()
+app.get("/robots.txt", (req, res) => {
+    const filePath = path.join(__dirname, "robots.txt");
+    if (!fs.existsSync(filePath)) {
+        res.status(404);
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        return res.send("robots.txt not found");
+    }
+    res.status(200);
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+    return res.sendFile(filePath);
+});
+
+app.get("/sitemap.xml", (req, res) => {
+    const filePath = path.join(__dirname, "sitemap.xml");
+    if (!fs.existsSync(filePath)) {
+        res.status(404);
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        return res.send("sitemap.xml not found");
+    }
+    res.status(200);
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+    return res.sendFile(filePath);
+});
+
 app.use(express.static(__dirname, {
     maxAge: "7d",
     etag: true,

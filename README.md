@@ -122,6 +122,7 @@ The platform includes authentication, e-commerce, customer self-service, staff a
 | **Accessibility** | ARIA labels, keyboard support, `prefers-reduced-motion` fallbacks, form `aria-invalid` states |
 | **Offline awareness** | `connectivity.js` shows connectivity banners when the network is unavailable |
 | **Scroll reveal** | Marketing sections animate into view on scroll (`script.js`) |
+| **SEO** | `robots.txt`, `sitemap.xml`, canonical/meta/Open Graph tags; Google Search Console verification on the homepage |
 | **Responsive legal pages** | Documentation-style layout: sticky sidebar on desktop (≥1024px), stacked tablet, compact mobile TOC |
 
 ### Products & E-Commerce
@@ -176,7 +177,7 @@ New customer registrations require email verification before the account can sig
 
 **Security:** bcrypt-hashed single-use tokens (`EmailVerificationToken`), rate-limited resend (3 per 15 min), login blocked with `EMAIL_NOT_VERIFIED` until verified. OAuth users are verified automatically. Existing users are migrated to `emailVerified: true` on startup.
 
-**Backend:** `services/emailVerificationService.js`, `routes/emailVerificationRoutes.js`, `models/EmailVerificationToken.js`
+**Backend:** `src/services/emailVerificationService.js`, `src/routes/emailVerificationRoutes.js`, `src/models/EmailVerificationToken.js`
 
 ### Account Types & Profile
 
@@ -187,7 +188,7 @@ New customer registrations require email verification before the account can sig
 
 `profile.html` sections: General Information, Contact, Address, Documents, Security, Account Status, Profile Picture. All fields are editable after login.
 
-**Migration:** On server startup, `services/migrateUsers.js` sets existing users to `accountType: personal` and `emailVerified: true` without requiring re-registration.
+**Migration:** On server startup, `src/services/migrateUsers.js` sets existing users to `accountType: personal` and `emailVerified: true` without requiring re-registration.
 
 ### Support Tickets
 
@@ -204,7 +205,7 @@ Staff dashboard **Support** tab (employee, manager, primary — **not** technica
 - Reply to customers, change status, view customer info
 - Users receive in-app notifications when staff reply
 
-**Backend:** `models/SupportTicket.js`, `services/supportTicketService.js`, `routes/supportRoutes.js`, `routes/dashboardSupportRoutes.js`
+**Backend:** `src/models/SupportTicket.js`, `src/services/supportTicketService.js`, `src/routes/supportRoutes.js`, `src/routes/dashboardSupportRoutes.js`
 
 ### Identity Verification
 
@@ -237,7 +238,7 @@ Staff dashboard **Identity** tab (employee, manager, primary):
 - Bulk review actions still supported (backward compatible)
 - Protected document download API
 
-**Backend:** `services/identityVerificationHelpers.js`, `routes/profileRoutes.js`, `routes/dashboardVerificationRoutes.js`, `services/uploadService.js`
+**Backend:** `src/services/identityVerificationHelpers.js`, `src/routes/profileRoutes.js`, `src/routes/dashboardVerificationRoutes.js`, `src/services/uploadService.js`
 
 ### UI/UX Improvements (Production Polish)
 
@@ -253,7 +254,7 @@ Staff dashboard **Identity** tab (employee, manager, primary):
 | **Page width** | Account-area pages widened to 1400px max (`ap-wrap`, `ap-card`) with responsive grids — single column on mobile, adaptive on tablet |
 | **Responsive** | Tuned for 390px, 430px, 768px, 1024px, 1440px across auth, profile, and support — no overflow, cropped forms, or broken buttons |
 
-**Frontend assets:** `identity-docs.css`, `support-ui.css`, `account-pages.css`, `shared/dom-utils.js`, `shared/support-message-utils.js`, `realtime-client.js`
+**Frontend assets:** `public/identity-docs.css`, `public/support-ui.css`, `public/account-pages.css`, `public/shared/dom-utils.js`, `public/shared/support-message-utils.js`, `public/realtime-client.js`
 
 ### Notifications
 
@@ -283,7 +284,7 @@ End-to-end password reset flow integrated with existing auth, validation, and lo
 
 **Email flow (Brevo via HTTPS API or SMTP):**
 
-- Modular mail service under `services/mail/`
+- Modular mail service under `src/services/mail/`
 - **Production on Render:** use `BREVO_API_KEY` (HTTPS port 443) — Render free tier blocks outbound SMTP ports 25/465/587
 - **Local development:** SMTP via Nodemailer still works when `BREVO_API_KEY` is not set
 - Transport selection (`MAIL_TRANSPORT=auto`): prefers Brevo API when `BREVO_API_KEY` is set, otherwise SMTP
@@ -325,12 +326,12 @@ End-to-end password reset flow integrated with existing auth, validation, and lo
 **Backend modules:**
 
 ```
-models/PasswordResetOtp.js
-middlewares/rateLimit.js
-validators/passwordResetValidators.js
-services/passwordResetService.js
-services/mail/mailService.js
-routes/passwordResetRoutes.js
+src/models/PasswordResetOtp.js
+src/middlewares/rateLimit.js
+src/validators/passwordResetValidators.js
+src/services/passwordResetService.js
+src/services/mail/mailService.js
+src/routes/passwordResetRoutes.js
 ```
 
 **Frontend modules:**
@@ -485,122 +486,121 @@ Additional: `delete-account.html` — account deletion information.
 
 ## Project Structure
 
+The app uses a thin bootstrap entrypoint (`server.js`), backend code under `src/`, and all browser-facing static files under `public/`. Public URLs (for example `/index.html`, `/api/...`, `/robots.txt`) are unchanged.
+
 ```
 web/
-├── server.js                 # Express API, auth, inline models, seeds, HTTP + Socket.IO
-├── cloudinary.js             # Cloudinary SDK configuration
-├── package.json              # Dependencies and npm scripts
+├── server.js                 # Loads dotenv and starts the app (`require("./src/app").start()`)
+├── package.json              # Dependencies (`npm start` → `node server.js`)
+├── package-lock.json
 ├── .env.example              # Environment variable template
+├── .gitignore
+├── README.md
 │
-├── constants/
-│   └── roles.js              # Shared staff/customer role constants (backend)
-├── middlewares/
-│   ├── auth.js               # requireAuth, requireRole, getRoleForEmail factory
-│   └── rateLimit.js          # In-memory rate limiter
-├── utils/
-│   └── apiResponse.js        # Consistent JSON response helpers
-├── shared/                   # Shared frontend utilities (no build step)
-│   ├── dom-utils.js          # esc(), formatDate()
-│   ├── staff-roles.js        # Staff role constants (frontend)
-│   └── support-message-utils.js  # Deduped chat message append helpers
-│
-├── index.html                # Home / landing page
-├── products.html             # Product catalog + cart drawer
-├── product-details.html      # Product specifications
-├── team.html                 # Our Team (API-driven roster)
-├── auth.html                 # Sign in / Sign up (Personal & Company)
-├── verify-email.html         # Email verification & resend
-├── forgot-password.html      # Password recovery — request OTP
-├── verify-otp.html           # Password recovery — verify 6-digit code
-├── reset-password.html       # Password recovery — set new password
-├── complete-profile.html     # Lightweight onboarding after sign-up / OAuth
-├── profile.html              # Account profile, documents, security
-├── support.html              # Customer support tickets (real-time chat)
-├── user-dashboard.html       # Customer order history
-├── dashboard.html            # Staff admin dashboard (inline tab logic)
-├── dashboard-extensions.js   # Staff Support & Identity UI
-├── dashboard-live.js         # Dashboard live sync (Socket.IO + polling fallback)
-├── realtime-client.js        # Shared Socket.IO client wrapper
-├── payment.html              # Checkout
-├── order-success.html        # Post-checkout confirmation
-│
-├── account-pages.css         # Shared profile/support page styles
-├── identity-docs.css         # Document upload, progress, lightbox, verification banners
-├── support-ui.css            # Support ticket chat UI
-├── notifications.js          # In-app notification badges
-├── profile.js                # Profile page logic
-├── support.js                # Support ticket UI
-│
-├── privacy.html              # Legal pages
-├── terms.html
-├── refund-policy.html
-├── shipping-policy.html
-├── faq.html
-├── delete-account.html
-│
-├── script.js                 # Shared frontend helpers, cart, scroll reveal, mobile nav
-├── infinity-loader.js        # Global loading system API
-├── infinity-loader.css       # Loader, skeleton, hero animation styles
-├── form-validation.js        # Shared client-side form validation
-├── form-validation.css       # Validation UI styles
-├── password-reset.js         # Password recovery OTP UI and API helpers
-├── password-reset.css        # Password recovery page styles
-│
-├── models/
-│   ├── PasswordResetOtp.js       # Hashed OTP records
-│   ├── EmailVerificationToken.js # Hashed email verification tokens
-│   ├── SupportTicket.js          # Support ticket threads
-│   └── Notification.js           # In-app notifications
-├── validators/
-│   └── passwordResetValidators.js
-├── services/
-│   ├── passwordResetService.js
-│   ├── emailVerificationService.js
-│   ├── supportTicketService.js
-│   ├── notificationService.js
-│   ├── uploadService.js          # Secure file uploads (images/PDF)
-│   ├── identityVerificationHelpers.js  # Draft workflow, per-doc status rules
-│   ├── migrateUsers.js           # Legacy user migration on startup
-│   ├── realtimeService.js        # Socket.IO init + event emitters
-│   └── mail/
-│       ├── mailService.js        # Mail facade (API + SMTP)
-│       ├── mailConfig.js
-│       ├── emailTemplates.js     # Password reset + verification templates
-│       ├── brevoApiTransport.js
-│       └── smtpTransport.js
-├── routes/
-│   ├── passwordResetRoutes.js
-│   ├── emailVerificationRoutes.js
-│   ├── supportRoutes.js
-│   ├── profileRoutes.js
-│   ├── notificationRoutes.js
-│   ├── dashboardSupportRoutes.js
-│   └── dashboardVerificationRoutes.js
 ├── scripts/
-│   └── test-password-reset.js   # Dev E2E password reset script
-├── site-nav.js               # Shared top navigation injector
-├── site-footer.js            # Shared footer injector
-├── connectivity.js           # Offline / connectivity banners
-├── legal-pages.js            # Legal page TOC scroll-spy
+│   └── test-password-reset.js   # Dev helper for password-reset flow
 │
-├── mazen.css                 # Global styles, dashboard, legacy components
-├── site-nav.css              # Shared top nav styles
-├── site-footer.css           # Shared footer styles
-├── cart-drawer.css           # Shopping cart drawer layout
-├── legal-pages.css           # Legal page layout and TOC
-├── home.css                  # Home page specific styles
-├── home-nav-index.css        # Home page nav variant
-├── home-nav-mobile.css       # Mobile navigation
+├── src/                      # Backend (Node / Express)
+│   ├── app.js                # Express app, routes, OAuth, payments, seeds, HTTP + Socket.IO
+│   ├── config/
+│   │   ├── cloudinary.js     # Cloudinary SDK configuration
+│   │   └── paths.js          # PUBLIC_ROOT / publicPath helpers
+│   ├── constants/
+│   │   └── roles.js          # Staff role constants (backend)
+│   ├── middlewares/
+│   │   ├── auth.js           # requireAuth, requireRole, getRoleForEmail factory
+│   │   └── rateLimit.js      # In-memory rate limiter
+│   ├── models/
+│   │   ├── index.js
+│   │   ├── User.js
+│   │   ├── Product.js
+│   │   ├── Cart.js
+│   │   ├── Order.js
+│   │   ├── TeamMember.js
+│   │   ├── PasswordResetOtp.js
+│   │   ├── EmailVerificationToken.js
+│   │   ├── SupportTicket.js
+│   │   └── Notification.js
+│   ├── routes/
+│   │   ├── passwordResetRoutes.js
+│   │   ├── emailVerificationRoutes.js
+│   │   ├── supportRoutes.js
+│   │   ├── profileRoutes.js
+│   │   ├── notificationRoutes.js
+│   │   ├── dashboardSupportRoutes.js
+│   │   └── dashboardVerificationRoutes.js
+│   ├── services/
+│   │   ├── passwordResetService.js
+│   │   ├── emailVerificationService.js
+│   │   ├── supportTicketService.js
+│   │   ├── notificationService.js
+│   │   ├── uploadService.js
+│   │   ├── identityVerificationHelpers.js
+│   │   ├── migrateUsers.js
+│   │   ├── realtimeService.js
+│   │   └── mail/
+│   │       ├── mailService.js
+│   │       ├── mailConfig.js
+│   │       ├── emailTemplates.js
+│   │       ├── brevoApiTransport.js
+│   │       └── smtpTransport.js
+│   └── validators/
+│       └── passwordResetValidators.js
 │
-├── snippets/
-│   ├── site-top-nav.html     # Navbar HTML reference
-│   └── site-footer.html      # Footer HTML reference
-│
-└── assets/
-    ├── images/               # Logos, team photos, marketing images
-    ├── products/             # Product images (local fallback)
-    ├── orders/receipts/      # Payment receipt fallback storage
-    └── screenshots/          # README preview images
+└── public/                   # Static frontend (HTML / CSS / JS / assets)
+    ├── index.html            # Home / landing page
+    ├── products.html
+    ├── product-details.html
+    ├── team.html
+    ├── auth.html
+    ├── verify-email.html
+    ├── forgot-password.html
+    ├── verify-otp.html
+    ├── reset-password.html
+    ├── complete-profile.html
+    ├── profile.html
+    ├── support.html
+    ├── user-dashboard.html
+    ├── dashboard.html
+    ├── payment.html
+    ├── order-success.html
+    ├── faq.html
+    ├── privacy.html
+    ├── terms.html
+    ├── refund-policy.html
+    ├── shipping-policy.html
+    ├── delete-account.html
+    ├── test-payment.html     # Dev/test payment page (disallowed in robots.txt)
+    ├── robots.txt            # Crawler rules (also served by an explicit Express route)
+    ├── sitemap.xml           # Public URL sitemap (also served by an explicit Express route)
+    ├── script.js             # Shared helpers, cart drawer, scroll reveal, mobile nav
+    ├── site-nav.js / site-nav.css
+    ├── site-footer.js / site-footer.css
+    ├── infinity-loader.js / infinity-loader.css
+    ├── form-validation.js / form-validation.css
+    ├── password-reset.js / password-reset.css
+    ├── connectivity.js
+    ├── notifications.js
+    ├── profile.js
+    ├── support.js
+    ├── dashboard-extensions.js
+    ├── dashboard-live.js
+    ├── realtime-client.js
+    ├── legal-pages.js / legal-pages.css
+    ├── mazen.css / home.css / cart-drawer.css / …
+    ├── shared/               # Shared frontend utilities (no build step)
+    │   ├── dom-utils.js
+    │   ├── staff-roles.js
+    │   └── support-message-utils.js
+    ├── snippets/
+    │   ├── site-top-nav.html
+    │   └── site-footer.html
+    ├── client-logos/         # Homepage client logos / media
+    └── assets/
+        ├── images/           # Logos and team photos
+        ├── products/         # Product images (local fallback)
+        ├── orders/receipts/  # Payment receipt fallback storage
+        └── screenshots/      # README preview images
 ```
 
 ---
@@ -810,6 +810,8 @@ Invalid fields show a red border and an error message below the input. Errors cl
 | **Responsive layout** | CSS Grid/Flexbox breakpoints; mobile card layouts for dashboard tables |
 | **Viewport-height Hero** | `svh`/`dvh` units and height-based media queries on mobile home Hero |
 | **Response compression** | Express `compression` middleware |
+| **Static asset root** | Browser files served from `public/` with cache headers for non-HTML assets |
+| **Client logo lazy-load** | Homepage client logos use `loading="lazy"` / `decoding="async"` |
 | **Cart drawer** | Fixed to viewport; only `.cart-items` scrolls internally |
 
 ---
@@ -1015,7 +1017,7 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
 ### Home
 
 <p align="center">
-  <img src="assets/screenshots/home.png" alt="INFINITY home page with hero, services, and client logos" width="900">
+  <img src="public/assets/screenshots/home.png" alt="INFINITY home page with hero, services, and client logos" width="900">
 </p>
 
 ---
@@ -1023,7 +1025,7 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
 ### Products
 
 <p align="center">
-  <img src="assets/screenshots/products.png" alt="Product catalog with category filters and search" width="900">
+  <img src="public/assets/screenshots/products.png" alt="Product catalog with category filters and search" width="900">
 </p>
 
 ---
@@ -1031,7 +1033,7 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
 ### Product Details
 
 <p align="center">
-  <img src="assets/screenshots/product-details.png" alt="Product details page with specifications" width="900">
+  <img src="public/assets/screenshots/product-details.png" alt="Product details page with specifications" width="900">
 </p>
 
 ---
@@ -1039,7 +1041,7 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
 ### Shopping Cart
 
 <p align="center">
-  <img src="assets/screenshots/cart.png" alt="Shopping cart drawer with quantity controls" width="900">
+  <img src="public/assets/screenshots/cart.png" alt="Shopping cart drawer with quantity controls" width="900">
 </p>
 
 ---
@@ -1047,7 +1049,7 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
 ### Checkout
 
 <p align="center">
-  <img src="assets/screenshots/checkout.png" alt="Checkout page with payment method options" width="900">
+  <img src="public/assets/screenshots/checkout.png" alt="Checkout page with payment method options" width="900">
 </p>
 
 ---
@@ -1055,7 +1057,7 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
 ### Staff Dashboard
 
 <p align="center">
-  <img src="assets/screenshots/dashboard.png" alt="Staff admin dashboard with inventory and orders" width="900">
+  <img src="public/assets/screenshots/dashboard.png" alt="Staff admin dashboard with inventory and orders" width="900">
 </p>
 
 ---
@@ -1066,12 +1068,12 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
   <tr>
     <td align="center" valign="top" width="49%">
       <strong>Sign In</strong><br><br>
-      <img src="assets/screenshots/auth-Sign-in.png" alt="Sign in page — email and password form" width="100%">
+      <img src="public/assets/screenshots/auth-Sign-in.png" alt="Sign in page — email and password form" width="100%">
     </td>
     <td width="2%"></td>
     <td align="center" valign="top" width="49%">
       <strong>Sign Up</strong><br><br>
-      <img src="assets/screenshots/auth-Sign-up.png" alt="Sign up page — registration form with password validation" width="100%">
+      <img src="public/assets/screenshots/auth-Sign-up.png" alt="Sign up page — registration form with password validation" width="100%">
     </td>
   </tr>
 </table>
@@ -1081,7 +1083,7 @@ A preview of the INFINITY Total-Com Solutions website across key pages and flows
 ### Footer
 
 <p align="center">
-  <img src="assets/screenshots/footer.png" alt="Shared three-column footer with quick links, contact, and map" width="900">
+  <img src="public/assets/screenshots/footer.png" alt="Shared three-column footer with quick links, contact, and map" width="900">
 </p>
 
 ---
@@ -1100,15 +1102,17 @@ Major features and improvements added in recent releases:
 | **Real-Time Dashboard** | Socket.IO live sync for orders, customers, inventory, users, identity, and analytics |
 | **Live Ticket Chat** | Two-way instant messaging between customers and admins (Socket.IO + deduped append) |
 | **Dashboard Identity Management** | Filterable verification queue (All / Pending / Approved / Rejected), per-document review |
-| **Codebase Cleanup** | Shared utilities (`shared/`, `constants/`, `middlewares/auth.js`), removed unused assets, updated docs |
+| **Codebase Cleanup** | Structural split into `public/` + `src/`, removed unused assets/helpers, SEO files under `public/`, docs updated |
 
 **Refactor notes (maintainability):**
 
-- Auth middleware extracted to `middlewares/auth.js`
-- Shared DOM helpers: `shared/dom-utils.js`
-- Shared support chat helpers: `shared/support-message-utils.js`
-- Role constants centralized: `constants/roles.js` (backend), `shared/staff-roles.js` (frontend)
-- Real-time layer: `services/realtimeService.js` + `realtime-client.js`
+- Thin `server.js` bootstrap → `src/app.js`
+- Auth middleware: `src/middlewares/auth.js`
+- Shared DOM helpers: `public/shared/dom-utils.js`
+- Shared support chat helpers: `public/shared/support-message-utils.js`
+- Role constants: `src/constants/roles.js` (backend), `public/shared/staff-roles.js` (frontend)
+- Real-time layer: `src/services/realtimeService.js` + `public/realtime-client.js`
+- SEO: `public/robots.txt`, `public/sitemap.xml` (explicit Express routes before static)
 
 ---
 
@@ -1153,7 +1157,7 @@ Potential enhancements for future releases:
 | Verification email not received | Check spam; use Resend on `verify-email.html` (max 3 per 15 min); ensure `BREVO_API_KEY` on Render |
 | Support / Identity tabs missing | Only **employee**, **manager**, and **primary** see these tabs — **technical** is excluded |
 | Document upload rejected | Use JPG, PNG, WEBP, or PDF (company only); images max 5 MB, PDF max 8 MB |
-| Existing users blocked at login | Restart server once — `migrateUsers.js` sets legacy accounts to `emailVerified: true` |
+| Existing users blocked at login | Restart server once — `src/services/migrateUsers.js` sets legacy accounts to `emailVerified: true` |
 
 ### Deployment notes (Render / production)
 

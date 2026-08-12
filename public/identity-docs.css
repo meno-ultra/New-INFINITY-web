@@ -1,0 +1,241 @@
+/* Identity verification & document upload UX */
+.verification-banner {
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.25rem;
+    display: grid;
+    gap: .35rem;
+    border: 1px solid transparent;
+}
+.verification-banner.none { background: #f8fafc; border-color: #e2e8f0; color: #475569; }
+.verification-banner.pending { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+.verification-banner.approved { background: #ecfdf5; border-color: #86efac; color: #166534; }
+.verification-banner.rejected,
+.verification-banner.reupload_requested { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+.verification-banner-title { margin: 0; font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: .5rem; }
+.verification-banner-sub { margin: 0; font-size: .88rem; opacity: .9; }
+
+.doc-progress {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+}
+.doc-progress-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .75rem;
+    flex-wrap: wrap;
+}
+.doc-progress-head h3 { margin: 0; font-size: .95rem; color: #0f172a; }
+.doc-progress-count { font-size: .85rem; font-weight: 700; color: #0891b2; }
+.doc-progress-bar {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: .85rem;
+}
+.doc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0891b2, #22d3ee);
+    border-radius: 999px;
+    transition: width .35s ease;
+}
+.doc-progress-list { display: grid; gap: .45rem; }
+.doc-progress-item {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: .86rem;
+    color: #334155;
+}
+.doc-progress-item .icon { width: 1.1rem; text-align: center; font-weight: 700; }
+.doc-progress-item.done .icon { color: #16a34a; }
+.doc-progress-item.missing .icon { color: #94a3b8; }
+.doc-progress-item.rejected .icon { color: #dc2626; }
+.doc-progress-item.approved .icon { color: #16a34a; }
+.doc-progress-item.pending .icon { color: #d97706; }
+
+.doc-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem;
+    background: #fff;
+    display: grid;
+    gap: .75rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+.doc-card.is-uploaded { border-color: #bae6fd; }
+.doc-card.is-locked { opacity: .72; }
+.doc-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .5rem;
+}
+.doc-card-title { margin: 0; font-size: .92rem; font-weight: 700; color: #0f172a; }
+.doc-meta {
+    margin: 0;
+    font-size: .78rem;
+    color: #64748b;
+}
+.doc-card-optional { font-size: .72rem; color: #64748b; font-weight: 600; }
+.doc-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    padding: .2rem .5rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.doc-status-pill.draft { background: #f1f5f9; color: #475569; }
+.doc-status-pill.none { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+.doc-status-pill.uploaded { background: #e0f2fe; color: #0369a1; }
+.doc-status-pill.pending { background: #fef3c7; color: #92400e; }
+.doc-status-pill.approved { background: #dcfce7; color: #166534; }
+.doc-status-pill.rejected { background: #fee2e2; color: #991b1b; }
+.doc-reject-reason {
+    margin: 0;
+    font-size: .8rem;
+    color: #b91c1c;
+    background: #fef2f2;
+    border-radius: 8px;
+    padding: .45rem .6rem;
+}
+.doc-drop-zone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 1.1rem;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    min-height: 88px;
+    display: grid;
+    place-content: center;
+    gap: .25rem;
+    transition: .2s ease;
+}
+.doc-drop-zone:hover,
+.doc-drop-zone.dragover { border-color: #0891b2; background: #ecfeff; }
+.doc-drop-zone i { color: #0891b2; font-size: 1.2rem; }
+.doc-drop-zone span { font-size: .84rem; color: #64748b; }
+.doc-preview-wrap {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f1f5f9;
+    aspect-ratio: 16/10;
+    max-height: 160px;
+    cursor: zoom-in;
+}
+.doc-preview-wrap img,
+.doc-preview-wrap object {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.doc-preview-pdf {
+    display: grid;
+    place-content: center;
+    height: 100%;
+    color: #64748b;
+    font-size: .85rem;
+    gap: .35rem;
+}
+.doc-preview-actions {
+    display: flex;
+    gap: .45rem;
+    flex-wrap: wrap;
+}
+.doc-preview-actions .ap-btn { padding: .5rem .75rem; font-size: .8rem; min-height: 38px; }
+.doc-upload-progress {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    display: none;
+}
+.doc-upload-progress.active { display: block; }
+.doc-upload-progress > span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: #0891b2;
+    transition: width .25s ease;
+}
+
+.doc-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(15, 23, 42, .88);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.doc-lightbox.open { display: flex; }
+.doc-lightbox-inner {
+    position: relative;
+    max-width: min(96vw, 900px);
+    max-height: 92vh;
+    width: 100%;
+}
+.doc-lightbox img,
+.doc-lightbox object {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 10px;
+    background: #fff;
+    object-fit: contain;
+}
+.doc-lightbox-close {
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    min-width: 44px;
+    min-height: 44px;
+}
+.doc-lightbox-zoom {
+    position: absolute;
+    bottom: -2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: .5rem;
+}
+.doc-lightbox-zoom button {
+    border: none;
+    background: rgba(255,255,255,.15);
+    color: #fff;
+    border-radius: 8px;
+    padding: .45rem .75rem;
+    cursor: pointer;
+    min-height: 40px;
+}
+
+.submit-verification-wrap {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    display: grid;
+    gap: .65rem;
+}
+.submit-verification-wrap .ap-btn { justify-self: start; }
+
+@media (max-width: 768px) {
+    .doc-card { padding: .85rem; }
+    .doc-preview-wrap { max-height: 140px; }
+}

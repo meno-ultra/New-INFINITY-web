@@ -5,7 +5,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const mailService = require("../services/mail/mailService");
+const mailService = require("../src/services/mail/mailService");
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const TEMP_PASSWORD = "TempOld9!Aa";
@@ -18,8 +18,8 @@ mailService.sendPasswordResetEmail = async ({ otp, ...rest }) => {
     return originalSend({ otp, ...rest });
 };
 
-delete require.cache[require.resolve("../services/passwordResetService")];
-const passwordResetService = require("../services/passwordResetService");
+delete require.cache[require.resolve("../src/services/passwordResetService")];
+const passwordResetService = require("../src/services/passwordResetService");
 
 function mockReq() {
     return { session: { save: (cb) => cb(null) } };

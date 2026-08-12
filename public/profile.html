@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Profile - INFINITY</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="stylesheet" href="mazen.css?v=20260506-1">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="site-nav.css?v=20260625">
+    <link rel="stylesheet" href="home-nav-mobile.css?v=20260625">
+    <link rel="stylesheet" href="form-validation.css?v=20260619">
+    <link rel="stylesheet" href="account-pages.css?v=20260626">
+    <link rel="stylesheet" href="identity-docs.css?v=20260624">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="site-page profile-page">
+    <div data-site-nav-mount></div>
+    <div class="ap-wrap">
+        <div class="ap-head">
+            <h1 class="ap-title">My Profile</h1>
+            <p class="ap-sub">Manage your account, documents, and security settings.</p>
+        </div>
+        <div class="ap-card">
+            <div id="verification-banner" class="verification-banner none" role="status" aria-live="polite"></div>
+            <div class="ap-tabs" role="tablist">
+                <button class="ap-tab active" data-tab="general" type="button">General</button>
+                <button class="ap-tab" data-tab="contact" type="button">Contact</button>
+                <button class="ap-tab" data-tab="documents" type="button">Documents</button>
+                <button class="ap-tab" data-tab="security" type="button">Security</button>
+            </div>
+            <div id="status-row" style="margin-bottom:1rem;display:flex;gap:.5rem;flex-wrap:wrap;"></div>
+            <section id="tab-general">
+                <p class="ap-sub">Registration details are read-only. Update contact info in the Contact tab.</p>
+                <div class="ap-grid two">
+                    <div class="ap-group"><label>Account Type</label><input id="pf-type" disabled></div>
+                    <div class="ap-group"><label for="pf-name">Name</label><input id="pf-name" disabled></div>
+                    <div class="ap-group company-only" hidden><label for="pf-company">Company Name</label><input id="pf-company" disabled></div>
+                    <div class="ap-group"><label for="pf-dob">Date of Birth</label><input id="pf-dob" type="date" disabled></div>
+                    <div class="ap-group"><label>Profile Picture</label><input id="pf-avatar-file" type="file" accept="image/jpeg,image/png,image/webp"></div>
+                </div>
+            </section>
+            <section id="tab-contact" hidden>
+                <div class="ap-grid two">
+                    <div class="ap-group"><label for="pf-phone">Phone</label><input id="pf-phone"></div>
+                    <div class="ap-group"><label for="pf-email">Email</label><input id="pf-email" disabled></div>
+                    <div class="ap-group"><label for="pf-address">Address</label><input id="pf-address"></div>
+                    <div class="ap-group"><label for="pf-city">City</label><input id="pf-city"></div>
+                    <div class="ap-group"><label for="pf-country">Country</label><input id="pf-country" class="country-readonly" value="Egypt" readonly></div>
+                    <div class="ap-group company-only" hidden><label for="pf-tax">Tax Number <span class="field-optional-tag">Optional</span></label><input id="pf-tax"></div>
+                    <div class="ap-group company-only" hidden><label for="pf-website">Company Website <span class="field-optional-tag">Optional</span></label><input id="pf-website"></div>
+                </div>
+            </section>
+            <section id="tab-documents" hidden>
+                <div id="doc-progress" class="doc-progress"></div>
+                <p class="ap-sub" id="doc-help"></p>
+                <div id="doc-grid" class="ap-grid two"></div>
+                <div class="submit-verification-wrap">
+                    <button class="ap-btn" id="submit-identity-btn" type="button">Submit for Verification</button>
+                    <p class="ap-sub" id="submit-hint">Upload all required documents, then submit together for review.</p>
+                </div>
+            </section>
+            <section id="tab-security" hidden>
+                <p class="ap-sub">Change your password from <a href="forgot-password.html">Forgot Password</a> if needed.</p>
+            </section>
+            <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+                <button class="ap-btn" id="save-profile-btn" type="button">Save changes</button>
+            </div>
+            <div id="profile-msg" class="ap-msg" aria-live="polite"></div>
+        </div>
+    </div>
+    <div id="doc-lightbox" class="doc-lightbox" role="dialog" aria-modal="true" aria-label="Document preview" hidden>
+        <div class="doc-lightbox-inner">
+            <button type="button" class="doc-lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+            <div id="lightbox-content"></div>
+            <div class="doc-lightbox-zoom" id="lightbox-zoom-controls" hidden>
+                <button type="button" id="lightbox-zoom-out">−</button>
+                <button type="button" id="lightbox-zoom-in">+</button>
+            </div>
+        </div>
+    </div>
+    <script src="site-nav.js?v=20260625"></script>
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="script.js?v=20260612"></script>
+    <script src="notifications.js?v=20260625"></script>
+    <script src="shared/dom-utils.js?v=20260702"></script>
+    <script src="profile.js?v=20260702"></script>
+</body>
+</html>

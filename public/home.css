@@ -1,0 +1,678 @@
+/* INFINITY homepage — UI enhancements (index.html only) */
+body.home-page {
+    --home-sky: #0ea5e9;
+    --home-deep: #0c4a6e;
+    --home-surface: #f8fafc;
+    --home-border: #e2e8f0;
+    --home-radius: 12px;
+}
+
+/* —— Hero —— */
+body.home-page .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, #0c4a6e 0%, #075985 38%, #0284c7 72%, #0ea5e9 100%);
+    min-height: min(100vh, 920px);
+    min-height: min(100dvh, 920px);
+    /* Full padding reset — no fixed top nav; only safe-area + balanced vertical rhythm */
+    padding: max(1.25rem, env(safe-area-inset-top, 0px)) 0 clamp(2.5rem, 6vw, 4rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.home-page .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 55% at 85% 15%, rgba(255, 255, 255, 0.14), transparent 50%),
+        radial-gradient(ellipse 45% 40% at 5% 90%, rgba(56, 189, 248, 0.2), transparent 55%);
+    pointer-events: none;
+}
+
+body.home-page .hero::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 120px;
+    background: linear-gradient(to top, #fff, transparent);
+    pointer-events: none;
+}
+
+body.home-page .hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+body.home-page .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 1rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #e0f2fe;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+}
+
+body.home-page .hero-trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.75rem;
+}
+
+body.home-page .hero-trust-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.55rem 0.85rem;
+    min-width: 5.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+}
+
+body.home-page .hero-trust-item strong {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+
+body.home-page .hero-trust-item span {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.82);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+body.home-page .cta-buttons {
+    flex-wrap: wrap;
+}
+
+body.home-page .cta-primary,
+body.home-page .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+body.home-page .cta-primary {
+    background: #fff;
+    color: var(--home-deep);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+}
+
+body.home-page .cta-primary:hover {
+    background: #f0f9ff;
+    color: var(--home-deep);
+}
+
+body.home-page .hero-scroll-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 2.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+body.home-page .hero-scroll-hint i {
+    font-size: 1.1rem;
+    animation: homeBounce 2s ease-in-out infinite;
+}
+
+body.home-page .hero-scroll-hint:hover {
+    color: #fff;
+    transform: translateY(2px);
+}
+
+@keyframes homeBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+/* —— Section system —— */
+body.home-page .home-section {
+    padding: clamp(3.5rem, 8vw, 5rem) 0;
+    text-align: left;
+}
+
+body.home-page .home-section--alt {
+    background: var(--home-surface);
+}
+
+body.home-page .home-section-head {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto clamp(2rem, 5vw, 2.75rem);
+}
+
+body.home-page .home-section-eyebrow {
+    display: inline-block;
+    margin: 0 0 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--home-sky);
+}
+
+body.home-page .home-section-head h2 {
+    margin: 0 0 0.65rem;
+    font-size: clamp(1.65rem, 4vw, 2.15rem);
+    color: var(--home-deep);
+    text-align: center;
+}
+
+body.home-page .home-section-lead {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--text-light);
+    text-align: center;
+}
+
+body.home-page .home-section .features h2,
+body.home-page .home-section.features > .container > h2 {
+    display: none;
+}
+
+/* About */
+body.home-page .home-about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: start;
+}
+
+body.home-page .home-about-copy p {
+    margin: 0 0 1rem;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--text-color);
+    text-align: left;
+}
+
+body.home-page .home-about-highlights {
+    display: grid;
+    gap: 0.75rem;
+}
+
+body.home-page .home-highlight-card {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 1rem 1.1rem;
+    background: #fff;
+    border: 1px solid var(--home-border);
+    border-radius: var(--home-radius);
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.home-page .home-highlight-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(14, 165, 233, 0.1);
+}
+
+body.home-page .home-highlight-card i {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--home-sky);
+    background: #f0f9ff;
+    border-radius: 10px;
+}
+
+body.home-page .home-highlight-card h3 {
+    margin: 0 0 0.25rem;
+    font-size: 0.95rem;
+    color: var(--home-deep);
+}
+
+body.home-page .home-highlight-card p {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--text-light);
+}
+
+/* Mission grid — 4 columns on desktop */
+body.home-page .mission-grid {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 0;
+}
+
+body.home-page .mission-grid .feature-card {
+    border: 1px solid var(--home-border);
+}
+
+body.home-page .mission-grid .feature-card i {
+    color: var(--home-sky);
+}
+
+/* Values */
+body.home-page .values-section.home-section {
+    text-align: center;
+}
+
+body.home-page .values-section .home-section-head h2 {
+    display: block;
+}
+
+body.home-page .value-card {
+    border: 1px solid var(--home-border);
+}
+
+body.home-page .value-card i {
+    width: 3rem;
+    height: 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f0f9ff;
+    font-size: 1.25rem;
+}
+
+/* Goals */
+body.home-page #goals .feature-card i {
+    color: var(--home-sky);
+}
+
+/* Services split */
+body.home-page .home-services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    text-align: left;
+}
+
+body.home-page .home-services-grid .feature-card {
+    align-items: flex-start;
+    text-align: left;
+    padding: 1.5rem 1.35rem;
+}
+
+body.home-page .home-services-grid .feature-card i {
+    margin-bottom: 0.85rem;
+}
+
+body.home-page .home-services-grid .feature-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-light);
+}
+
+body.home-page .home-etit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--home-deep);
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+}
+
+/* Clients */
+body.home-page #clients.clients {
+    background: linear-gradient(180deg, #fff 0%, var(--home-surface) 100%);
+}
+
+body.home-page #clients .home-section-head h2 {
+    color: var(--home-deep);
+}
+
+body.home-page .client-logo.featured {
+    border: 2px solid #bae6fd;
+    box-shadow: 0 12px 40px rgba(14, 165, 233, 0.12);
+    border-radius: var(--home-radius);
+}
+
+@media (max-width: 992px) {
+    body.home-page .home-about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    body.home-page .mission-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    body.home-page .hero-trust-row {
+        justify-content: center;
+    }
+
+    body.home-page .home-section {
+        padding: clamp(2.75rem, 6vw, 3.5rem) 0;
+    }
+}
+
+/* Override mazen.css mission phone layout (broken 2-col + display:contents) */
+@media (max-width: 768px) {
+    body.home-page #mission .container {
+        display: block !important;
+    }
+
+    body.home-page #mission .home-section-head {
+        max-width: none;
+        margin: 0 auto 1.35rem;
+        padding: 0 0.15rem;
+    }
+
+    body.home-page #mission .mission-grid.features-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 0.85rem !important;
+        width: 100%;
+    }
+
+    body.home-page #mission .mission-grid .feature-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+        min-height: auto !important;
+        width: 100%;
+        padding: 1.15rem 1rem !important;
+        border-radius: var(--home-radius) !important;
+        gap: 0.55rem;
+    }
+
+    body.home-page #mission .mission-grid .feature-card i {
+        margin-bottom: 0.15rem;
+        font-size: 1.65rem !important;
+    }
+
+    body.home-page #mission .mission-grid .feature-card h3 {
+        font-size: 1rem !important;
+        line-height: 1.3;
+        margin: 0;
+    }
+
+    body.home-page #mission .mission-grid .feature-card p {
+        font-size: 0.88rem !important;
+        line-height: 1.5;
+        margin: 0;
+        max-width: 28ch;
+    }
+}
+
+/* ── Mobile Hero: fit full section in initial viewport (≤768px only) ── */
+@media (max-width: 768px) {
+    body.home-page .hero {
+        /* Logo defaults to full mobile size — only reduced in short-height queries below */
+        --hero-logo: clamp(145px, 20svh, 150px);
+        --hero-pad-top: clamp(0.5rem, 2.2svh, 1.25rem);
+        --hero-pad-bottom: clamp(0.35rem, 1.4svh, 0.85rem);
+        --hero-main-gap: clamp(0.45rem, 1.8svh, 1.15rem);
+        --hero-stack-gap: clamp(0.3rem, 1svh, 0.65rem);
+        --hero-cta-gap: clamp(0.32rem, 0.95svh, 0.55rem);
+        --hero-trust-mt: clamp(0.4rem, 1.3svh, 0.85rem);
+        --hero-explore-mt: clamp(0.3rem, 1.1svh, 0.7rem);
+
+        min-height: 100svh;
+        min-height: 100dvh;
+        height: 100dvh;
+        max-height: 100dvh;
+        padding: max(var(--hero-pad-top), env(safe-area-inset-top, 0px)) 0 var(--hero-pad-bottom);
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    body.home-page .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-height: 100%;
+        padding: 0 clamp(0.65rem, 3vw, 1rem);
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    body.home-page .hero-main {
+        flex: 0 1 auto;
+        min-height: 0;
+        flex-direction: column;
+        gap: var(--hero-main-gap);
+        width: 100%;
+    }
+
+    body.home-page .hero::after {
+        height: clamp(28px, 5.5svh, 56px);
+    }
+
+    body.home-page .hero-text-content {
+        text-align: center;
+        max-width: 100%;
+    }
+
+    body.home-page .hero-logo-image {
+        width: var(--hero-logo);
+        height: auto;
+        object-fit: contain;
+    }
+
+    body.home-page .hero-eyebrow {
+        margin: 0 0 var(--hero-stack-gap);
+        padding: 0.28rem 0.65rem;
+        font-size: clamp(0.66rem, 1.9svh, 0.76rem);
+    }
+
+    body.home-page .hero h1 {
+        margin-bottom: clamp(0.15rem, 0.5svh, 0.35rem);
+    }
+
+    body.home-page .hero-company-name {
+        font-size: clamp(1.75rem, 6.8svh, 2.65rem) !important;
+        letter-spacing: 1px;
+    }
+
+    body.home-page .hero-subtitle {
+        margin-bottom: var(--hero-stack-gap);
+        font-size: clamp(0.95rem, 3.2svh, 1.25rem);
+    }
+
+    body.home-page .hero-text {
+        margin-bottom: var(--hero-stack-gap);
+        font-size: clamp(0.8rem, 2.15svh, 0.92rem);
+        line-height: 1.42;
+        max-width: 36ch;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    body.home-page .cta-buttons {
+        margin-top: clamp(0.25rem, 0.85svh, 0.55rem);
+        flex-direction: column;
+        gap: var(--hero-cta-gap);
+        padding: 0 clamp(0.5rem, 4vw, 1rem);
+        width: 100%;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    body.home-page .cta-primary,
+    body.home-page .cta-secondary {
+        min-height: 44px;
+        padding: clamp(0.55rem, 1.6svh, 0.72rem) clamp(0.9rem, 2.8svh, 1.15rem);
+        font-size: clamp(0.84rem, 2.1svh, 0.92rem);
+        width: 100%;
+    }
+
+    body.home-page .hero-trust-row {
+        margin-top: var(--hero-trust-mt);
+        gap: clamp(0.3rem, 0.9svh, 0.5rem);
+        justify-content: center;
+    }
+
+    body.home-page .hero-trust-item {
+        padding: clamp(0.32rem, 1.1svh, 0.48rem) clamp(0.45rem, 1.4svh, 0.65rem);
+        min-width: clamp(4.2rem, 26vw, 5.2rem);
+    }
+
+    body.home-page .hero-trust-item strong {
+        font-size: clamp(0.82rem, 2.4svh, 0.98rem);
+    }
+
+    body.home-page .hero-trust-item span {
+        font-size: clamp(0.58rem, 1.6svh, 0.66rem);
+    }
+
+    body.home-page .hero-scroll-hint {
+        margin-top: var(--hero-explore-mt);
+        gap: 0.2rem;
+        font-size: clamp(0.62rem, 1.7svh, 0.72rem);
+    }
+
+    body.home-page .hero-scroll-hint i {
+        font-size: clamp(0.85rem, 2.4svh, 1rem);
+    }
+}
+
+/*
+ * Height-based compaction — spacing first, logo last.
+ * Tall phones (812px+): full 150px logo, spacing unchanged.
+ */
+@media (max-width: 768px) and (max-height: 896px) {
+    body.home-page .hero {
+        --hero-main-gap: clamp(0.4rem, 1.55svh, 0.95rem);
+    }
+}
+
+@media (max-width: 768px) and (max-height: 844px) {
+    body.home-page .hero {
+        --hero-stack-gap: clamp(0.26rem, 0.92svh, 0.55rem);
+        --hero-trust-mt: clamp(0.32rem, 1.15svh, 0.65rem);
+    }
+}
+
+@media (max-width: 768px) and (max-height: 812px) {
+    body.home-page .hero {
+        --hero-pad-top: clamp(0.42rem, 1.9svh, 0.95rem);
+        --hero-pad-bottom: clamp(0.28rem, 1.1svh, 0.65rem);
+        --hero-cta-gap: clamp(0.28rem, 0.82svh, 0.48rem);
+        --hero-explore-mt: clamp(0.24rem, 0.92svh, 0.52rem);
+    }
+}
+
+/* Medium height — tighten spacing only; logo stays at 150px */
+@media (max-width: 768px) and (max-height: 780px) {
+    body.home-page .hero {
+        --hero-pad-top: clamp(0.38rem, 1.7svh, 0.78rem);
+        --hero-pad-bottom: clamp(0.22rem, 0.95svh, 0.48rem);
+        --hero-main-gap: clamp(0.35rem, 1.25svh, 0.72rem);
+        --hero-stack-gap: clamp(0.2rem, 0.78svh, 0.42rem);
+        --hero-cta-gap: clamp(0.26rem, 0.75svh, 0.42rem);
+        --hero-trust-mt: clamp(0.26rem, 0.95svh, 0.48rem);
+        --hero-explore-mt: clamp(0.2rem, 0.78svh, 0.4rem);
+    }
+
+    body.home-page .hero-company-name {
+        font-size: clamp(1.55rem, 6.2svh, 2.15rem) !important;
+    }
+}
+
+@media (max-width: 768px) and (max-height: 740px) {
+    body.home-page .hero {
+        --hero-pad-top: clamp(0.34rem, 1.55svh, 0.68rem);
+        --hero-pad-bottom: clamp(0.2rem, 0.88svh, 0.42rem);
+        --hero-main-gap: clamp(0.3rem, 1.1svh, 0.62rem);
+        --hero-cta-gap: clamp(0.24rem, 0.7svh, 0.38rem);
+        --hero-trust-mt: clamp(0.22rem, 0.85svh, 0.4rem);
+        --hero-explore-mt: clamp(0.18rem, 0.72svh, 0.34rem);
+    }
+
+    body.home-page .hero-text {
+        font-size: clamp(0.78rem, 2.05svh, 0.88rem);
+        line-height: 1.38;
+    }
+
+    body.home-page .hero-trust-item {
+        min-width: clamp(4rem, 24vw, 4.8rem);
+    }
+}
+
+/* Short screens — spacing maxed out first, then subtle logo reduction */
+@media (max-width: 768px) and (max-height: 720px) {
+    body.home-page .hero {
+        --hero-pad-top: clamp(0.3rem, 1.4svh, 0.58rem);
+        --hero-pad-bottom: clamp(0.18rem, 0.78svh, 0.36rem);
+        --hero-main-gap: clamp(0.28rem, 1svh, 0.55rem);
+        --hero-stack-gap: clamp(0.18rem, 0.68svh, 0.36rem);
+        --hero-cta-gap: clamp(0.22rem, 0.65svh, 0.34rem);
+        --hero-trust-mt: clamp(0.2rem, 0.72svh, 0.34rem);
+        --hero-explore-mt: clamp(0.16rem, 0.62svh, 0.28rem);
+        --hero-logo: clamp(138px, 19svh, 148px);
+    }
+}
+
+@media (max-width: 768px) and (max-height: 667px) {
+    body.home-page .hero {
+        --hero-pad-top: clamp(0.28rem, 1.25svh, 0.5rem);
+        --hero-pad-bottom: clamp(0.16rem, 0.7svh, 0.3rem);
+        --hero-main-gap: clamp(0.24rem, 0.9svh, 0.48rem);
+        --hero-stack-gap: clamp(0.14rem, 0.55svh, 0.28rem);
+        --hero-cta-gap: clamp(0.2rem, 0.58svh, 0.3rem);
+        --hero-trust-mt: clamp(0.16rem, 0.62svh, 0.28rem);
+        --hero-explore-mt: clamp(0.14rem, 0.55svh, 0.24rem);
+        --hero-logo: clamp(122px, 18svh, 136px);
+    }
+
+    body.home-page .hero-company-name {
+        font-size: clamp(1.38rem, 5.6svh, 1.85rem) !important;
+    }
+
+    body.home-page .hero-subtitle {
+        font-size: clamp(0.84rem, 2.6svh, 1rem);
+    }
+
+    body.home-page .hero-trust-item {
+        min-width: clamp(3.6rem, 22vw, 4.4rem);
+        padding: 0.26rem 0.38rem;
+    }
+
+    body.home-page .hero-trust-item strong {
+        font-size: clamp(0.76rem, 2.1svh, 0.88rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.home-page .hero-scroll-hint i {
+        animation: none;
+    }
+
+    body.home-page .hero-content {
+        transform: none !important;
+    }
+}

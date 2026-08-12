@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Verify Email - INFINITY</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="stylesheet" href="mazen.css?v=20260506-1">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="password-reset.css?v=20260620">
+    <link rel="stylesheet" href="account-pages.css?v=20260621">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="pr-page">
+    <div class="pr-wrap">
+        <div class="pr-card" id="verify-card">
+            <img src="assets/images/infinity-logo1.png" alt="" class="pr-logo" width="56" height="56">
+            <h1 class="pr-title">Verify Your Email</h1>
+            <p class="pr-sub" id="verify-sub">Enter the verification code from your email, or open the link we sent you.</p>
+            <p class="pr-sub" id="verify-expiry" style="margin-top:.5rem;font-weight:600;color:#0891b2;"></p>
+
+            <div id="verify-success" class="pr-success" hidden>
+                <div class="ap-success-icon"><i class="fas fa-check" aria-hidden="true"></i></div>
+                <h2 class="pr-success-title">Email Verified</h2>
+                <p class="pr-success-text">Your account is now active.</p>
+                <p class="pr-success-redirect">Redirecting to Sign In in <strong data-redirect-countdown>2</strong>…</p>
+            </div>
+
+            <form id="verify-form" class="ap-grid">
+                <div class="pr-group">
+                    <label for="verify-email">Email address</label>
+                    <input type="email" id="verify-email" autocomplete="email" required>
+                </div>
+                <div class="pr-group">
+                    <label for="verify-token">Verification code</label>
+                    <input type="text" id="verify-token" placeholder="Paste code from email" autocomplete="one-time-code">
+                    <small class="ap-sub" style="display:block;margin-top:.35rem;">The code is in your verification email. Links expire in 15 minutes.</small>
+                </div>
+                <button type="submit" class="pr-btn" id="verify-btn">Verify Email</button>
+                <button type="button" class="pr-btn ghost" id="resend-btn" style="background:#e2e8f0;color:#0f172a;">Resend Code</button>
+                <p class="ap-sub" id="resend-timer" style="text-align:center;margin:0;"></p>
+                <div id="verify-msg" class="pr-msg" aria-live="polite"></div>
+                <a href="auth.html" class="pr-back" style="justify-content:center;margin-top:.5rem;">Back to Sign In</a>
+            </form>
+        </div>
+    </div>
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="password-reset.js?v=20260620"></script>
+    <script>
+        (function () {
+            const TOKEN_TTL_MS = 15 * 60 * 1000;
+            const RESEND_COOLDOWN_MS = 60 * 1000;
+            const params = new URLSearchParams(location.search);
+            const urlToken = params.get("token");
+            const email = params.get("email") || sessionStorage.getItem("pending_verify_email") || "";
+            const msg = document.getElementById("verify-msg");
+            const emailInput = document.getElementById("verify-email");
+            const tokenInput = document.getElementById("verify-token");
+            const form = document.getElementById("verify-form");
+            const resendBtn = document.getElementById("resend-btn");
+            const resendTimer = document.getElementById("resend-timer");
+            const expiryEl = document.getElementById("verify-expiry");
+            const successEl = document.getElementById("verify-success");
+            const { showMessage, hideMessage, apiPost } = PasswordResetUI;
+
+            if (email) {
+                emailInput.value = email;
+                sessionStorage.setItem("pending_verify_email", email);
+            }
+            if (urlToken) tokenInput.value = urlToken;
+
+            function getExpiresAt() {
+                const stored = sessionStorage.getItem("pending_verify_expires");
+                if (stored) return Number(stored);
+                const created = sessionStorage.getItem("pending_verify_sent_at");
+                if (created) return Number(created) + TOKEN_TTL_MS;
+                return Date.now() + TOKEN_TTL_MS;
+            }
+
+            function setExpiresAt(isoOrMs) {
+                const ms = typeof isoOrMs === "string" ? new Date(isoOrMs).getTime() : isoOrMs;
+                sessionStorage.setItem("pending_verify_expires", String(ms));
+            }
+
+            function formatCountdown(ms) {
+                const total = Math.max(0, Math.floor(ms / 1000));
+                const m = Math.floor(total / 60);
+                const s = total % 60;
+                return `${m}:${String(s).padStart(2, "0")}`;
+            }
+
+            let expiryTimer = null;
+            function startExpiryCountdown() {
+                if (expiryTimer) clearInterval(expiryTimer);
+                expiryTimer = setInterval(() => {
+                    const left = getExpiresAt() - Date.now();
+                    if (left <= 0) {
+                        expiryEl.textContent = "Verification code expired. Please resend.";
+                        expiryEl.style.color = "#b91c1c";
+                        clearInterval(expiryTimer);
+                        return;
+                    }
+                    expiryEl.textContent = `Code expires in ${formatCountdown(left)}`;
+                    expiryEl.style.color = "#0891b2";
+                }, 1000);
+            }
+
+            let resendCooldownTimer = null;
+            function startResendCooldown(untilMs) {
+                const until = untilMs || Date.now() + RESEND_COOLDOWN_MS;
+                sessionStorage.setItem("pending_verify_resend_until", String(until));
+                resendBtn.disabled = true;
+                if (resendCooldownTimer) clearInterval(resendCooldownTimer);
+                resendCooldownTimer = setInterval(() => {
+                    const left = until - Date.now();
+                    if (left <= 0) {
+                        resendBtn.disabled = false;
+                        resendTimer.textContent = "";
+                        clearInterval(resendCooldownTimer);
+                        return;
+                    }
+                    resendTimer.textContent = `Resend available in ${formatCountdown(left)}`;
+                }, 1000);
+            }
+
+            const resendUntil = Number(sessionStorage.getItem("pending_verify_resend_until") || 0);
+            if (resendUntil > Date.now()) startResendCooldown(resendUntil);
+
+            async function verifyToken(token) {
+                if (!email || !token) {
+                    showMessage(msg, "Enter your email and verification code.", "error");
+                    return;
+                }
+                hideMessage(msg);
+                const btn = document.getElementById("verify-btn");
+                if (window.InfinityLoader) InfinityLoader.setButtonLoading(btn, true);
+                try {
+                    await apiPost("/api/email-verification/verify", { email: emailInput.value.trim(), token: token.trim() });
+                    form.hidden = true;
+                    document.querySelector(".pr-logo")?.classList.add("pr-meta-hidden");
+                    document.querySelector(".pr-title")?.classList.add("pr-meta-hidden");
+                    document.getElementById("verify-sub")?.classList.add("pr-meta-hidden");
+                    expiryEl.classList.add("pr-meta-hidden");
+                    successEl.hidden = false;
+                    successEl.classList.add("is-visible");
+                    sessionStorage.removeItem("pending_verify_expires");
+                    let left = 2;
+                    const cd = successEl.querySelector("[data-redirect-countdown]");
+                    const timer = setInterval(() => {
+                        left -= 1;
+                        if (cd) cd.textContent = String(Math.max(left, 0));
+                        if (left <= 0) clearInterval(timer);
+                    }, 1000);
+                    setTimeout(() => { window.location.href = "auth.html?verified=1"; }, 2000);
+                } catch (err) {
+                    showMessage(msg, err.message || "Verification failed.", "error");
+                } finally {
+                    if (window.InfinityLoader) InfinityLoader.setButtonLoading(btn, false);
+                }
+            }
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                await verifyToken(tokenInput.value);
+            });
+
+            resendBtn.addEventListener("click", async () => {
+                hideMessage(msg);
+                if (window.InfinityLoader) InfinityLoader.setButtonLoading(resendBtn, true);
+                try {
+                    const data = await apiPost("/api/email-verification/resend", { email: emailInput.value.trim() });
+                    showMessage(msg, data.message || "Verification email sent.", "success");
+                    if (data.expiresAt) setExpiresAt(data.expiresAt);
+                    else setExpiresAt(Date.now() + TOKEN_TTL_MS);
+                    sessionStorage.setItem("pending_verify_sent_at", String(Date.now()));
+                    startExpiryCountdown();
+                    startResendCooldown();
+                } catch (err) {
+                    showMessage(msg, err.message || "Could not resend email.", "error");
+                } finally {
+                    if (window.InfinityLoader) InfinityLoader.setButtonLoading(resendBtn, false);
+                }
+            });
+
+            startExpiryCountdown();
+            if (urlToken && email) verifyToken(urlToken);
+        })();
+    </script>
+</body>
+</html>

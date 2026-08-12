@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Visa Payment Test - INFINITY Total-Com Solutions</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/infinity-logo1.png">
+    <link rel="stylesheet" href="mazen.css?v=20260603-team-ui">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="site-nav.css?v=20260603-nav11">
+    <link rel="stylesheet" href="home-nav-mobile.css?v=20260603-m3">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .test-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .visa-form {
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .payment-security {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f0f8ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            color: #0066cc;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .payment-security i {
+            color: #22c55e;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .processing {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .processing.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .test-info {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            color: #856404;
+        }
+
+        .test-info h3 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-info ul {
+            margin-left: 1.5rem;
+        }
+
+        .test-info li {
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body class="site-page">
+    <nav class="home-quick-nav site-top-nav" aria-label="Site navigation">
+        <div class="container home-quick-nav-inner">
+            <a href="index.html" class="logo home-quick-logo">
+                <img src="assets/images/infinity-logo.png" alt="" class="logo-image" width="48" height="48">
+                <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" class="nav-logo-svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0f3d52;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#5cb3d4;stop-opacity:1" />
+                            <stop offset="60%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0f3d52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="10" y="100" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="130" letter-spacing="6" fill="url(#infinityGrad)">INFINITY</text>
+                    <text x="300" y="145" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="25" letter-spacing="1" fill="#3a7a95">Total-Com Solutions</text>
+                </svg>
+                <span class="visually-hidden">INFINITY Total-Com Solutions — Home</span>
+            </a>
+            <div class="home-quick-links">
+                <a href="index.html" class="home-quick-link"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+                <a href="index.html#about" class="home-quick-link"><i class="fas fa-building" aria-hidden="true"></i> About</a>
+                <a href="index.html#mission" class="home-quick-link home-quick-link--trim"><i class="fas fa-bullseye" aria-hidden="true"></i> Mission</a>
+                <a href="index.html#services" class="home-quick-link"><i class="fas fa-wrench" aria-hidden="true"></i> Services</a>
+                <a href="products.html" class="home-quick-link"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Products</a>
+                <a href="index.html#clients" class="home-quick-link home-quick-link--trim"><i class="fas fa-handshake" aria-hidden="true"></i> Clients</a>
+                <a href="team.html" class="home-quick-link" title="Our Team"><i class="fas fa-users" aria-hidden="true"></i> Team</a>
+                <a href="index.html#contact" class="home-quick-link"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Contact</a>
+            </div>
+            <div class="home-quick-nav-actions">
+                <div class="home-account-dropdown is-guest" id="home-account-menu">
+                    <button type="button" class="home-account-toggle" id="home-account-toggle" aria-expanded="false" aria-controls="home-account-panel" aria-haspopup="true">
+                        <i class="fas fa-user home-account-toggle-icon" aria-hidden="true"></i>
+                        <span class="home-account-toggle-label">Sign In</span>
+                        <i class="fas fa-chevron-down home-account-chevron" aria-hidden="true"></i>
+                    </button>
+                    <div class="home-account-panel" id="home-account-panel" hidden>
+                        <p class="home-account-panel-title">Your account</p>
+                        <ul class="home-account-list">
+                            <li class="user-orders-link" hidden>
+                                <a href="user-dashboard.html" class="home-account-item my-orders-nav-link">
+                                    <i class="fas fa-receipt" aria-hidden="true"></i> My Orders
+                                </a>
+                            </li>
+                            <li class="staff-dashboard-link" hidden>
+                                <a href="dashboard.html" class="home-account-item dashboard-nav-link">
+                                    <i class="fas fa-chart-line" aria-hidden="true"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="home-account-signin-item" hidden>
+                                <a href="auth.html" class="home-account-item account-link">
+                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+                                </a>
+                            </li>
+                            <li class="home-account-signout-item" hidden>
+                                <button type="button" class="home-account-item home-account-signout-btn" id="home-account-signout">
+                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="test-container">
+        <h1>Visa Payment Test</h1>
+        
+        <div class="test-info">
+            <h3><i class="fas fa-info-circle"></i> Test Information</h3>
+            <ul>
+                <li>This is a test environment for Visa payment processing</li>
+                <li>Use any valid card number format (13-19 digits)</li>
+                <li>Use any future expiry date (MM/YY format)</li>
+                <li>Use any 3-4 digit CVV</li>
+                <li>Payment success rate is 90% (random simulation)</li>
+                <li>No real charges will be made</li>
+            </ul>
+        </div>
+
+        <form id="visa-payment-form" class="visa-form">
+            <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="expiry-date">Expiry Date</label>
+                    <input type="text" id="expiry-date" name="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cardholder-name">Cardholder Name</label>
+                <input type="text" id="cardholder-name" name="cardholderName" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="billing-email">Email Address</label>
+                <input type="email" id="billing-email" name="billingEmail" placeholder="john@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="billing-phone">Phone Number</label>
+                <input type="tel" id="billing-phone" name="billingPhone" placeholder="+201234567890" required>
+            </div>
+            <div class="form-group">
+                <label for="billing-address">Billing Address</label>
+                <textarea id="billing-address" name="billingAddress" placeholder="Enter your billing address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount (EGP)</label>
+                <input type="number" id="amount" name="amount" placeholder="100.00" step="0.01" min="0" required>
+            </div>
+            
+            <div class="payment-security">
+                <i class="fas fa-lock"></i>
+                <span>Your payment information is secure and encrypted</span>
+            </div>
+
+            <button type="submit" id="submit-btn" class="submit-btn">
+                Process Payment
+            </button>
+        </form>
+
+        <div id="processing" class="processing">
+            <div class="spinner"></div>
+            <h3>Processing Payment...</h3>
+            <p>Please wait while we process your payment securely.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Require login before allowing payment tests
+            (async () => {
+                try {
+                    const res = await fetch("/api/user", { credentials: "include" });
+                    if (!res.ok) {
+                        window.location.href = "/auth.html";
+                    }
+                } catch (e) {
+                    window.location.href = "/auth.html";
+                }
+            })();
+
+            const form = document.getElementById('visa-payment-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const processing = document.getElementById('processing');
+
+            // Visa form input formatting
+            const cardNumberInput = document.getElementById('card-number');
+            const expiryDateInput = document.getElementById('expiry-date');
+            const cvvInput = document.getElementById('cvv');
+
+            // Format card number with spaces
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = value.replace(/\d{4}(?=.)/g, '$& ');
+                e.target.value = formattedValue;
+            });
+
+            // Format expiry date
+            expiryDateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                }
+                e.target.value = value;
+            });
+
+            // Format CVV (numbers only)
+            cvvInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+
+            // Handle form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                // Validate form
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                // Show processing
+                submitBtn.disabled = true;
+                processing.classList.add('show');
+                submitBtn.style.display = 'none';
+                if (window.InfinityLoader) InfinityLoader.showFullscreen('Processing payment…');
+
+                try {
+                    const formData = new FormData(form);
+                    const paymentData = {
+                        cardNumber: formData.get('cardNumber').replace(/\s/g, ''),
+                        expiryDate: formData.get('expiryDate'),
+                        cvv: formData.get('cvv'),
+                        cardholderName: formData.get('cardholderName'),
+                        billingEmail: formData.get('billingEmail'),
+                        billingPhone: formData.get('billingPhone'),
+                        billingAddress: formData.get('billingAddress'),
+                        amount: parseFloat(formData.get('amount')),
+                        currency: 'EGP',
+                        orderItems: [
+                            {
+                                name: 'Test Product',
+                                price: parseFloat(formData.get('amount')),
+                                quantity: 1
+                            }
+                        ]
+                    };
+
+                    const response = await fetch('/api/process-payment', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(paymentData)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        alert(`Payment successful!\nTransaction ID: ${result.transactionId}\nAmount: EGP ${result.amount}\n\nThank you for your test payment!`);
+                        form.reset();
+                    } else {
+                        throw new Error(result.error || 'Payment failed');
+                    }
+                } catch (error) {
+                    alert(`Payment failed: ${error.message}`);
+                } finally {
+                    // Hide processing and show submit button
+                    processing.classList.remove('show');
+                    if (window.InfinityLoader) InfinityLoader.hideFullscreen();
+                    submitBtn.style.display = 'block';
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="script.js?v=20260603-6"></script>
+</body>
+</html>

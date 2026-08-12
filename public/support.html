@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Support - INFINITY</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="stylesheet" href="mazen.css?v=20260506-1">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="site-nav.css?v=20260625">
+    <link rel="stylesheet" href="home-nav-mobile.css?v=20260625">
+    <link rel="stylesheet" href="account-pages.css?v=20260626">
+    <link rel="stylesheet" href="support-ui.css?v=20260625">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="site-page support-page">
+    <div data-site-nav-mount></div>
+    <div class="ap-wrap support-page-wrap">
+        <div class="ap-head">
+            <h1 class="ap-title">Support Center</h1>
+            <p class="ap-sub">Get help from our team — track tickets and chat in real time.</p>
+        </div>
+        <div class="support-layout">
+            <aside class="support-sidebar">
+                <div class="ap-card support-panel-card">
+                    <div class="support-sidebar-head">
+                        <h2>Your Tickets</h2>
+                        <button class="ap-btn" id="new-ticket-btn" type="button"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+                    </div>
+                    <div id="ticket-list" class="ap-ticket-list" aria-live="polite"></div>
+                </div>
+            </aside>
+
+            <main class="ap-card support-panel-card support-chat-panel" id="ticket-detail">
+                <div class="ap-empty" id="ticket-empty">Select a ticket or create a new one to start a conversation.</div>
+                <div id="ticket-view" class="support-conversation" hidden>
+                    <header class="support-chat-header">
+                        <h2 id="ticket-subject"></h2>
+                        <p class="support-chat-sub" id="ticket-chat-sub"></p>
+                    </header>
+                    <div class="support-chat-wrap">
+                        <div id="ticket-chat" class="support-timeline" role="log" aria-live="polite"></div>
+                    </div>
+                    <form id="reply-form" class="support-reply-box">
+                        <textarea id="reply-body" placeholder="Type your reply…" required></textarea>
+                        <div class="support-reply-attach">
+                            <label for="reply-attachments">Attach images <span class="field-optional-tag">Optional</span></label>
+                            <input id="reply-attachments" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple>
+                        </div>
+                        <div class="support-reply-actions">
+                            <button class="ap-btn" type="submit"><i class="fas fa-paper-plane" aria-hidden="true"></i> Send</button>
+                            <button class="ap-btn ghost" type="button" id="close-ticket-btn">Close ticket</button>
+                        </div>
+                        <div id="reply-msg" class="ap-msg" aria-live="polite"></div>
+                    </form>
+                </div>
+                <form id="create-form" class="support-create-card" hidden>
+                    <h2>New Support Ticket</h2>
+                    <div class="ap-group"><label for="ticket-subject-input">Subject</label><input id="ticket-subject-input" required maxlength="200"></div>
+                    <div class="ap-group"><label for="ticket-category">Category</label><select id="ticket-category" required></select></div>
+                    <div class="ap-group"><label for="ticket-description">Description</label><textarea id="ticket-description" required placeholder="Describe your issue in detail…"></textarea></div>
+                    <div class="ap-group"><label for="ticket-attachments">Screenshots / documents <span class="field-optional-tag">Optional</span></label><input id="ticket-attachments" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple></div>
+                    <div class="support-create-actions">
+                        <button class="ap-btn" type="submit">Submit ticket</button>
+                        <button class="ap-btn ghost" type="button" id="cancel-create">Cancel</button>
+                    </div>
+                    <div id="create-msg" class="ap-msg" aria-live="polite"></div>
+                </form>
+            </main>
+
+            <aside class="support-details-sidebar ap-card support-panel-card" id="ticket-details-panel" hidden>
+                <h3 class="support-details-title">Ticket Info</h3>
+                <div class="ticket-meta-grid" id="ticket-meta-grid"></div>
+            </aside>
+        </div>
+    </div>
+    <script src="site-nav.js?v=20260625"></script>
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="script.js?v=20260612"></script>
+    <script src="notifications.js?v=20260625"></script>
+    <script src="shared/dom-utils.js?v=20260702"></script>
+    <script src="shared/staff-roles.js?v=20260702"></script>
+    <script src="shared/support-message-utils.js?v=20260702"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="realtime-client.js?v=20260702"></script>
+    <script src="support.js?v=20260702"></script>
+</body>
+</html>

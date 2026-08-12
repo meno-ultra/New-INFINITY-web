@@ -12,6 +12,7 @@ logs/
 .env
 .env.*
 !.env.example
+env.txt
 
 coverage/
 dist/
@@ -27,9 +28,10 @@ build/
 *.bak
 
 # Runtime order receipt uploads (keep directory via .gitkeep)
-assets/orders/receipts/*
-!assets/orders/receipts/.gitkeep
+public/assets/orders/receipts/*
+!public/assets/orders/receipts/.gitkeep
 
 # Local test artifacts (not used by the app)
-assets/products/test.jpg
-assets/products/cut-off-engine1.png 
+public/assets/products/test.jpg
+public/assets/products/cut-off-engine1.png 
+testsprite_tests\tmp\config.json

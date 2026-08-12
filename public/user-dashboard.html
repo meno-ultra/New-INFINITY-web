@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>My Orders - INFINITY</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/infinity-logo1.png">
+    <link rel="stylesheet" href="mazen.css?v=20260603-team-ui">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="site-nav.css?v=20260603-nav11">
+    <link rel="stylesheet" href="home-nav-mobile.css?v=20260603-m3">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f4f7fb; }
+        .my-wrap { max-width: 1120px; margin: 1.5rem auto 1.2rem; padding: 0 1rem; }
+        .my-head, .my-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 8px 22px rgba(2, 6, 23, .08);
+            padding: 1rem;
+        }
+        .my-head { margin-bottom: 1rem; }
+        .my-title { margin: 0; color: #0891b2; }
+        .my-sub { margin: .25rem 0 0; color: #64748b; }
+        .tools { margin-top: .75rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: center; }
+        .tools input, .tools select {
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: .5rem .65rem;
+            background: #fff;
+            width: 100%;
+            min-width: 0;
+        }
+        .tools select { min-width: 160px; }
+        .orders-grid { display: grid; gap: .8rem; }
+        .order-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            padding: .8rem;
+        }
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: .7rem;
+            margin-bottom: .65rem;
+        }
+        .order-id { margin: 0; color: #0f172a; font-weight: 700; }
+        .order-meta { margin: .2rem 0 0; color: #64748b; font-size: .86rem; }
+        .status-chip {
+            padding: .22rem .62rem;
+            border-radius: 999px;
+            font-size: .82rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .status-completed { background: #dcfce7; color: #166534; }
+        .status-processing { background: #dbeafe; color: #1d4ed8; }
+        .status-pending { background: #fef9c3; color: #854d0e; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .status-failed { background: #e2e8f0; color: #334155; }
+        .items { display: grid; gap: .45rem; margin-bottom: .65rem; }
+        .item {
+            display: flex;
+            gap: .55rem;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            padding: .42rem;
+        }
+        .item img {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #fff;
+            border: 1px solid #dbe3ee;
+            flex-shrink: 0;
+        }
+        .item-meta { font-size: .84rem; color: #334155; line-height: 1.25; min-width: 0; overflow-wrap: anywhere; }
+        .order-bottom { display: flex; justify-content: space-between; align-items: center; gap: .7rem; flex-wrap: wrap; }
+        .amount { color: #0f172a; font-weight: 700; }
+        .pdf-btn {
+            border: none;
+            border-radius: 9px;
+            background: #0f766e;
+            color: #fff;
+            font-weight: 700;
+            font-size: .82rem;
+            padding: .46rem .72rem;
+            cursor: pointer;
+        }
+        .empty {
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            color: #64748b;
+            background: #f8fafc;
+            padding: 1rem;
+            text-align: center;
+        }
+        @media (max-width: 680px) {
+            .my-wrap { padding: 0 max(0.6rem, env(safe-area-inset-left)) 0 max(0.6rem, env(safe-area-inset-right)); }
+            .tools { display: grid; grid-template-columns: 1fr; }
+            .tools input, .tools select { min-width: 0; width: 100%; min-height: 44px; font-size: 16px; }
+            .order-top { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+            .order-top .status-chip { align-self: flex-start; }
+            .order-id { word-break: break-word; }
+            .pdf-btn { width: 100%; min-height: 48px; font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body class="site-page">
+    <nav class="home-quick-nav site-top-nav" aria-label="Site navigation">
+        <div class="container home-quick-nav-inner">
+            <a href="index.html" class="logo home-quick-logo">
+                <img src="assets/images/infinity-logo.png" alt="" class="logo-image" width="48" height="48">
+                <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" class="nav-logo-svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0f3d52;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#5cb3d4;stop-opacity:1" />
+                            <stop offset="60%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0f3d52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="10" y="100" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="130" letter-spacing="6" fill="url(#infinityGrad)">INFINITY</text>
+                    <text x="300" y="145" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="25" letter-spacing="1" fill="#3a7a95">Total-Com Solutions</text>
+                </svg>
+                <span class="visually-hidden">INFINITY Total-Com Solutions — Home</span>
+            </a>
+            <div class="home-quick-links">
+                <a href="index.html" class="home-quick-link"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+                <a href="index.html#about" class="home-quick-link"><i class="fas fa-building" aria-hidden="true"></i> About</a>
+                <a href="index.html#mission" class="home-quick-link home-quick-link--trim"><i class="fas fa-bullseye" aria-hidden="true"></i> Mission</a>
+                <a href="index.html#services" class="home-quick-link"><i class="fas fa-wrench" aria-hidden="true"></i> Services</a>
+                <a href="products.html" class="home-quick-link"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Products</a>
+                <a href="index.html#clients" class="home-quick-link home-quick-link--trim"><i class="fas fa-handshake" aria-hidden="true"></i> Clients</a>
+                <a href="team.html" class="home-quick-link" title="Our Team"><i class="fas fa-users" aria-hidden="true"></i> Team</a>
+                <a href="index.html#contact" class="home-quick-link"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Contact</a>
+            </div>
+            <div class="home-quick-nav-actions">
+                <div class="home-account-dropdown is-guest" id="home-account-menu">
+                    <button type="button" class="home-account-toggle" id="home-account-toggle" data-notif-badge aria-expanded="false" aria-controls="home-account-panel" aria-haspopup="true">
+                        <i class="fas fa-user home-account-toggle-icon" aria-hidden="true"></i>
+                        <span class="home-account-toggle-label">Sign In</span>
+                        <i class="fas fa-chevron-down home-account-chevron" aria-hidden="true"></i>
+                    </button>
+                    <div class="home-account-panel" id="home-account-panel" hidden>
+                        <p class="home-account-panel-title">Your account</p>
+                        <ul class="home-account-list">
+                            <li class="user-orders-link" hidden>
+                                <a href="user-dashboard.html" class="home-account-item my-orders-nav-link">
+                                    <i class="fas fa-receipt" aria-hidden="true"></i> My Orders
+                                </a>
+                            </li>
+                            <li class="user-profile-link" hidden>
+                                <a href="profile.html" class="home-account-item">
+                                    <i class="fas fa-user-circle" aria-hidden="true"></i> Profile
+                                </a>
+                            </li>
+                            <li class="user-support-link" hidden>
+                                <a href="support.html" class="home-account-item">
+                                    <i class="fas fa-life-ring" aria-hidden="true"></i> Support
+                                </a>
+                            </li>
+                            <li class="staff-dashboard-link" hidden>
+                                <a href="dashboard.html" class="home-account-item dashboard-nav-link">
+                                    <i class="fas fa-chart-line" aria-hidden="true"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="home-account-signin-item" hidden>
+                                <a href="auth.html" class="home-account-item account-link">
+                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+                                </a>
+                            </li>
+                            <li class="home-account-signout-item" hidden>
+                                <button type="button" class="home-account-item home-account-signout-btn" id="home-account-signout">
+                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="my-wrap">
+        <div class="my-head">
+            <h2 class="my-title">My Orders</h2>
+            <p class="my-sub">Track your order status and download PDF anytime.</p>
+            <div class="tools">
+                <input id="orders-search" placeholder="Search by ID, status, payment, phone, email...">
+                <select id="status-filter">
+                    <option value="">All statuses</option>
+                    <option value="pending">pending</option>
+                    <option value="processing">processing</option>
+                    <option value="completed">completed</option>
+                    <option value="cancelled">cancelled</option>
+                    <option value="failed">failed</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="my-card">
+            <div id="orders-list" class="orders-grid"></div>
+        </div>
+    </div>
+
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="script.js?v=20260612"></script>
+    <script src="notifications.js?v=20260625"></script>
+    <script>
+        let allOrders = [];
+
+        function statusClass(status) {
+            return `status-${String(status || "").toLowerCase()}`;
+        }
+
+        function matches(order, keyword, statusFilter) {
+            if (statusFilter && String(order.status || "").toLowerCase() !== statusFilter) return false;
+            if (!keyword) return true;
+            const hay = [
+                order._id,
+                order.transactionId,
+                order.customerName,
+                order.customerEmail,
+                order.customerPhone,
+                order.customerState,
+                order.paymentMethod,
+                order.status,
+                order.amount
+            ].filter(Boolean).join(" ").toLowerCase();
+            return hay.includes(keyword);
+        }
+
+        function renderOrders() {
+            const list = document.getElementById("orders-list");
+            const keyword = (document.getElementById("orders-search").value || "").trim().toLowerCase();
+            const statusFilter = (document.getElementById("status-filter").value || "").trim().toLowerCase();
+            const visible = allOrders.filter((o) => matches(o, keyword, statusFilter));
+
+            if (!visible.length) {
+                list.innerHTML = `<div class="empty">No orders found.</div>`;
+                return;
+            }
+
+            list.innerHTML = visible.map((o) => {
+                const items = Array.isArray(o.orderItems) ? o.orderItems : [];
+                return `
+                    <div class="order-box">
+                        <div class="order-top">
+                            <div>
+                                <p class="order-id">${o.transactionId || o._id}</p>
+                                <p class="order-meta">${o.createdAt ? new Date(o.createdAt).toLocaleString() : "-"} | ${o.paymentMethod || "-"}</p>
+                            </div>
+                            <span class="status-chip ${statusClass(o.status)}">${o.status || "-"}</span>
+                        </div>
+                        <div class="items">
+                            ${items.length ? items.map((item) => `
+                                <div class="item">
+                                    <img src="${item.image || "assets/images/infinity-logo.png"}" alt="${item.name || "item"}">
+                                    <div class="item-meta">
+                                        <div><strong>${item.name || "-"}</strong> x ${item.quantity || 1}</div>
+                                        <div>Price: EGP ${Number(item.price || 0).toFixed(2)} | Install: EGP ${Number(item.installation || 0).toFixed(2)}</div>
+                                    </div>
+                                </div>
+                            `).join("") : `<div class="empty">No items</div>`}
+                        </div>
+                        <div class="order-bottom">
+                            <div class="amount">Total: EGP ${Number(o.amount || 0).toFixed(2)}</div>
+                            <button class="pdf-btn" onclick="downloadPdf('${o._id}', this)">PDF</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function downloadPdf(orderId, btn) {
+            if (btn && window.InfinityLoader) {
+                InfinityLoader.setButtonLoading(btn, true, "PDF…");
+                setTimeout(() => InfinityLoader.setButtonLoading(btn, false), 2500);
+            }
+            window.open(`/api/orders/${orderId}/pdf`, "_blank");
+        }
+
+        async function ensureAuth() {
+            const res = await fetch("/api/user", { credentials: "include" });
+            if (!res.ok) {
+                window.location.href = "/auth.html";
+                return false;
+            }
+            return true;
+        }
+
+        async function loadOrders() {
+            const list = document.getElementById("orders-list");
+            if (window.InfinityLoader) {
+                list.innerHTML = `<div class="il-sk-orders-grid">${InfinityLoader.skeletonOrderCards(3)}</div>`;
+                list.setAttribute("aria-busy", "true");
+            }
+            const ok = await ensureAuth();
+            if (!ok) return;
+            const res = await fetch("/api/orders/me", { credentials: "include" });
+            const data = await res.json();
+            allOrders = Array.isArray(data.orders) ? data.orders : [];
+            if (list) list.removeAttribute("aria-busy");
+            renderOrders();
+        }
+
+        document.getElementById("orders-search").addEventListener("input", renderOrders);
+        document.getElementById("status-filter").addEventListener("change", renderOrders);
+        loadOrders();
+    </script>
+</body>
+</html>

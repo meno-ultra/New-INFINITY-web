@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Order Success - INFINITY</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/infinity-logo1.png">
+    <link rel="stylesheet" href="mazen.css?v=20260603-team-ui">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="site-nav.css?v=20260603-nav11">
+    <link rel="stylesheet" href="home-nav-mobile.css?v=20260603-m3">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f4f7fb; }
+        .success-wrap {
+            max-width: 1080px;
+            margin: 1rem auto 1.2rem;
+            padding: 0 max(1rem, env(safe-area-inset-right)) 0 max(1rem, env(safe-area-inset-left));
+        }
+        .success-card {
+            overflow: visible;
+        }
+        .success-title { margin: 0 0 .35rem; color: #0891b2; }
+        .success-subtitle { margin: 0; color: #475569; font-size: .95rem; }
+        .s-btn {
+            border: none;
+            border-radius: 10px;
+            padding: .56rem .8rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: .42rem;
+        }
+        .s-btn.primary { background: #0891b2; color: #fff; }
+        .s-btn.ghost { background: #e2e8f0; color: #0f172a; }
+        .success-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 8px 22px rgba(2, 6, 23, .08);
+            padding: 1rem;
+        }
+        .success-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding: .3rem .65rem;
+            border-radius: 999px;
+            font-size: .82rem;
+            font-weight: 700;
+            background: #dcfce7;
+            color: #166534;
+            margin-bottom: .75rem;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .75rem;
+            margin-bottom: 1rem;
+        }
+        .meta-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            padding: .65rem .75rem;
+        }
+        .meta-label { color: #64748b; font-size: .82rem; }
+        .meta-value { color: #0f172a; font-weight: 700; margin-top: .2rem; word-break: break-word; }
+        .items-list { display: grid; gap: .55rem; }
+        .item-row {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fff;
+            padding: .5rem .6rem;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+        }
+        .item-row img {
+            width: 58px;
+            height: 58px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #dbe3ee;
+            background: #fff;
+            flex-shrink: 0;
+        }
+        .item-main { min-width: 0; flex: 1; }
+        .item-name { margin: 0 0 .2rem; font-weight: 700; color: #0f172a; }
+        .item-sub { margin: 0; font-size: .86rem; color: #475569; }
+        .totals {
+            margin-top: .9rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: .7rem;
+            display: grid;
+            gap: .35rem;
+        }
+        .total-line { display: flex; justify-content: space-between; gap: 1rem; color: #334155; }
+        .total-line.final { color: #0891b2; font-weight: 800; font-size: 1.04rem; }
+        .error-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            border-radius: 10px;
+            padding: .7rem .85rem;
+        }
+        @media (max-width: 900px) {
+            .meta-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 680px) {
+            .success-wrap { padding: 0 max(0.6rem, env(safe-area-inset-right)) 0 max(0.6rem, env(safe-area-inset-left)); margin: 1rem auto; }
+            .success-actions { display: grid; grid-template-columns: 1fr 1fr; }
+            .s-btn { justify-content: center; }
+            .item-row { align-items: flex-start; }
+            .item-main { overflow-wrap: anywhere; }
+        }
+    </style>
+</head>
+<body class="site-page">
+    <nav class="home-quick-nav site-top-nav" aria-label="Site navigation">
+        <div class="container home-quick-nav-inner">
+            <a href="index.html" class="logo home-quick-logo">
+                <img src="assets/images/infinity-logo.png" alt="" class="logo-image" width="48" height="48">
+                <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" class="nav-logo-svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0f3d52;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#5cb3d4;stop-opacity:1" />
+                            <stop offset="60%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0f3d52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="10" y="100" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="130" letter-spacing="6" fill="url(#infinityGrad)">INFINITY</text>
+                    <text x="300" y="145" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="25" letter-spacing="1" fill="#3a7a95">Total-Com Solutions</text>
+                </svg>
+                <span class="visually-hidden">INFINITY Total-Com Solutions — Home</span>
+            </a>
+            <div class="home-quick-links">
+                <a href="index.html" class="home-quick-link"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+                <a href="index.html#about" class="home-quick-link"><i class="fas fa-building" aria-hidden="true"></i> About</a>
+                <a href="index.html#mission" class="home-quick-link home-quick-link--trim"><i class="fas fa-bullseye" aria-hidden="true"></i> Mission</a>
+                <a href="index.html#services" class="home-quick-link"><i class="fas fa-wrench" aria-hidden="true"></i> Services</a>
+                <a href="products.html" class="home-quick-link"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Products</a>
+                <a href="index.html#clients" class="home-quick-link home-quick-link--trim"><i class="fas fa-handshake" aria-hidden="true"></i> Clients</a>
+                <a href="team.html" class="home-quick-link" title="Our Team"><i class="fas fa-users" aria-hidden="true"></i> Team</a>
+                <a href="index.html#contact" class="home-quick-link"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Contact</a>
+            </div>
+            <div class="home-quick-nav-actions">
+                <div class="home-account-dropdown is-guest" id="home-account-menu">
+                    <button type="button" class="home-account-toggle" id="home-account-toggle" aria-expanded="false" aria-controls="home-account-panel" aria-haspopup="true">
+                        <i class="fas fa-user home-account-toggle-icon" aria-hidden="true"></i>
+                        <span class="home-account-toggle-label">Sign In</span>
+                        <i class="fas fa-chevron-down home-account-chevron" aria-hidden="true"></i>
+                    </button>
+                    <div class="home-account-panel" id="home-account-panel" hidden>
+                        <p class="home-account-panel-title">Your account</p>
+                        <ul class="home-account-list">
+                            <li class="user-orders-link" hidden>
+                                <a href="user-dashboard.html" class="home-account-item my-orders-nav-link">
+                                    <i class="fas fa-receipt" aria-hidden="true"></i> My Orders
+                                </a>
+                            </li>
+                            <li class="staff-dashboard-link" hidden>
+                                <a href="dashboard.html" class="home-account-item dashboard-nav-link">
+                                    <i class="fas fa-chart-line" aria-hidden="true"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="home-account-signin-item" hidden>
+                                <a href="auth.html" class="home-account-item account-link">
+                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+                                </a>
+                            </li>
+                            <li class="home-account-signout-item" hidden>
+                                <button type="button" class="home-account-item home-account-signout-btn" id="home-account-signout">
+                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="success-wrap">
+        <div class="success-card" id="order-success-content">
+            <h2 class="success-title">Order Submitted Successfully</h2>
+            <p class="success-subtitle" style="margin-bottom:.75rem;">Your order is saved. You can review all details below.</p>
+            <div class="success-chip"><i class="fas fa-circle-check"></i> Success</div>
+            <div id="order-success-body" aria-busy="true"></div>
+        </div>
+    </div>
+
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="script.js?v=20260603-6"></script>
+    <script>
+        function money(v) {
+            return `EGP ${Number(v || 0).toFixed(2)}`;
+        }
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        async function initSuccessPage() {
+            const body = document.getElementById("order-success-body");
+            if (window.InfinityLoader) {
+                body.innerHTML = InfinityLoader.skeletonOrderDetail();
+            } else {
+                body.textContent = "Loading order details...";
+            }
+
+            try {
+                const userRes = await fetch("/api/user", { credentials: "include" });
+                if (!userRes.ok) {
+                    window.location.href = "/auth.html";
+                    return;
+                }
+                const orderId = new URLSearchParams(window.location.search).get("orderId");
+                if (!orderId) {
+                    body.innerHTML = `<div class="error-box">Missing order id.</div>`;
+                    return;
+                }
+
+                const res = await fetch(`/api/orders/${encodeURIComponent(orderId)}`, { credentials: "include" });
+                const data = await res.json();
+                if (!res.ok || !data?.order) {
+                    body.innerHTML = `<div class="error-box">${escapeHtml(data?.error || "Could not load order details.")}</div>`;
+                    return;
+                }
+
+                const order = data.order;
+                const items = Array.isArray(order.orderItems) ? order.orderItems : [];
+                const createdAt = order.createdAt ? new Date(order.createdAt).toLocaleString() : "-";
+                const subtotal = items.reduce((sum, item) => sum + (Number(item.price || 0) + Number(item.installation || 0)) * Number(item.quantity || 1), 0);
+                const vat = order.vatApplied ? subtotal * 0.14 : 0;
+                const total = Number(order.amount || 0);
+
+                body.removeAttribute("aria-busy");
+                body.innerHTML = `
+                    <div class="meta-grid">
+                        <div class="meta-box"><div class="meta-label">Order ID</div><div class="meta-value">${escapeHtml(order._id || "-")}</div></div>
+                        <div class="meta-box"><div class="meta-label">Transaction ID</div><div class="meta-value">${escapeHtml(order.transactionId || "-")}</div></div>
+                        <div class="meta-box"><div class="meta-label">Customer</div><div class="meta-value">${escapeHtml(order.customerName || "-")} (${escapeHtml(order.customerEmail || "-")})</div></div>
+                        <div class="meta-box"><div class="meta-label">Phone / Location</div><div class="meta-value">${escapeHtml(order.customerPhone || "-")} / ${escapeHtml(order.customerState || "-")}</div></div>
+                        <div class="meta-box"><div class="meta-label">Payment</div><div class="meta-value">${escapeHtml(order.paymentMethod || "-")} | ${escapeHtml(order.status || "-")}</div></div>
+                        <div class="meta-box"><div class="meta-label">Created</div><div class="meta-value">${escapeHtml(createdAt)}</div></div>
+                    </div>
+                    <h3 style="margin:.2rem 0 .65rem;color:#0f172a;">Ordered Items</h3>
+                    <div class="items-list">
+                        ${items.length ? items.map((item) => `
+                            <div class="item-row">
+                                <img src="${escapeHtml(item.image || "assets/images/infinity-logo.png")}" alt="${escapeHtml(item.name || "item")}">
+                                <div class="item-main">
+                                    <p class="item-name">${escapeHtml(item.name || "-")} x ${Number(item.quantity || 1)}</p>
+                                    <p class="item-sub">Price: ${money(item.price)} | Install: ${money(item.installation)}</p>
+                                </div>
+                            </div>
+                        `).join("") : `<div class="meta-box">No items found.</div>`}
+                    </div>
+                    <div class="totals">
+                        <div class="total-line"><span>Subtotal</span><strong>${money(subtotal)}</strong></div>
+                        <div class="total-line"><span>VAT (14%)</span><strong>${money(vat)}</strong></div>
+                        <div class="total-line final"><span>Total</span><span>${money(total)}</span></div>
+                    </div>
+                `;
+            } catch (_error) {
+                body.innerHTML = `<div class="error-box">Unexpected error while loading your order details.</div>`;
+            }
+        }
+
+        initSuccessPage();
+    </script>
+</body>
+</html>

@@ -1,0 +1,561 @@
+/* Top sticky nav — products page + shared site pages (Our Team style) */
+body.products-page,
+body.site-page {
+    --home-sky: #0ea5e9;
+    --home-deep: #0c4a6e;
+    --home-surface: #f8fafc;
+    --home-border: #e2e8f0;
+    --home-radius: 12px;
+}
+
+body.products-page nav.home-quick-nav.site-top-nav,
+body.site-page nav.home-quick-nav.site-top-nav {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100%;
+    z-index: 900;
+    padding: 0.5rem 0;
+    overflow: visible;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--home-border);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+
+/* mazen.css: nav .container { display:flex } — reset for 3-column grid */
+body.products-page nav.home-quick-nav.site-top-nav .container.home-quick-nav-inner,
+body.site-page nav.home-quick-nav.site-top-nav .container.home-quick-nav-inner {
+    justify-content: unset !important;
+    flex-wrap: nowrap !important;
+}
+
+/* mazen.css sets nav .container { display:flex } — force grid so links don't sit under account */
+body.products-page nav.home-quick-nav.site-top-nav .home-quick-nav-inner,
+body.site-page nav.home-quick-nav.site-top-nav .home-quick-nav-inner {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "logo links actions";
+    align-items: center;
+    column-gap: 0.75rem;
+    min-height: 5rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    min-width: 0;
+    overflow: visible;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+body.products-page .home-quick-nav-inner,
+body.site-page .home-quick-nav-inner {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "logo links actions";
+    align-items: center;
+    column-gap: 0.75rem;
+    min-height: 5rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    min-width: 0;
+    overflow: visible;
+}
+
+/* Match index homepage nav logo (home-nav-index.css) */
+body.products-page nav.site-top-nav .logo.home-quick-logo,
+body.site-page nav.site-top-nav .logo.home-quick-logo {
+    grid-area: logo;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-width: 0 !important;
+    max-width: none !important;
+    gap: 0.55rem;
+    text-decoration: none;
+    flex: 0 0 auto !important;
+}
+
+@media (min-width: 993px) {
+    body.products-page nav.site-top-nav .logo.home-quick-logo,
+    body.site-page nav.site-top-nav .logo.home-quick-logo {
+        flex: 0 0 auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+    }
+}
+
+body.products-page nav.site-top-nav .home-quick-logo .logo-image,
+body.site-page nav.site-top-nav .home-quick-logo .logo-image {
+    height: 48px !important;
+    width: auto;
+    flex-shrink: 0;
+    object-fit: contain;
+    display: block;
+    opacity: 1;
+    filter: none;
+}
+
+body.products-page nav.site-top-nav .home-quick-logo .nav-logo-svg,
+body.site-page nav.site-top-nav .home-quick-logo .nav-logo-svg {
+    height: 40px !important;
+    width: auto !important;
+    min-width: 120px !important;
+    max-width: min(200px, 38vw) !important;
+    flex-shrink: 0;
+    display: block;
+    overflow: visible;
+}
+
+body.products-page .home-quick-links,
+body.site-page .home-quick-links {
+    grid-area: links;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #bae6fd transparent;
+    padding: 0.5rem 0.35rem 0.55rem 0;
+    scroll-padding-inline: 0.5rem 1rem;
+    min-height: 2.85rem;
+    box-sizing: border-box;
+    contain: layout style;
+}
+
+body.products-page .home-quick-links::-webkit-scrollbar,
+body.site-page .home-quick-links::-webkit-scrollbar {
+    display: none;
+}
+
+body.products-page .home-quick-nav-actions,
+body.site-page .home-quick-nav-actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    justify-self: end;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    padding-left: 0.75rem;
+    margin-left: auto;
+    border-left: 1px solid var(--home-border);
+    background: rgba(255, 255, 255, 0.98);
+}
+
+body.products-page .home-quick-nav-actions .cart-icon {
+    margin-left: 0;
+}
+
+body.products-page .home-quick-nav-cart.cart-icon,
+body.product-details-page .home-quick-nav-cart.cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.15rem;
+    color: var(--primary-color);
+    padding: 0.45rem 0.55rem;
+    margin: 0;
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+}
+
+body.products-page .home-account-dropdown,
+body.site-page .home-account-dropdown {
+    position: relative;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+body.products-page .home-account-toggle,
+body.site-page .home-account-toggle,
+body.home-page .home-account-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.62rem 1.05rem;
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-color);
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(14, 165, 233, 0.12);
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+body.products-page .home-account-toggle-label,
+body.site-page .home-account-toggle-label {
+    color: var(--text-color);
+}
+
+body.products-page .home-account-toggle:hover,
+body.site-page .home-account-toggle:hover {
+    background: #e0f2fe;
+    border-color: var(--home-sky);
+    color: var(--primary-color);
+}
+
+body.products-page .home-account-toggle:hover .home-account-toggle-label,
+body.site-page .home-account-toggle:hover .home-account-toggle-label,
+body.products-page .home-account-toggle:hover .home-account-chevron,
+body.site-page .home-account-toggle:hover .home-account-chevron {
+    color: var(--primary-color);
+}
+
+body.products-page .home-account-toggle[aria-expanded="true"],
+body.site-page .home-account-toggle[aria-expanded="true"] {
+    background: #fff;
+    border-color: var(--home-sky);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
+}
+
+body.products-page .home-account-toggle[aria-expanded="true"] .home-account-chevron,
+body.site-page .home-account-toggle[aria-expanded="true"] .home-account-chevron {
+    transform: rotate(180deg);
+}
+
+body.products-page .home-account-chevron,
+body.site-page .home-account-chevron {
+    font-size: 0.7rem;
+    color: var(--home-sky);
+    opacity: 0.9;
+    transition: transform 0.2s ease;
+}
+
+body.products-page .home-account-toggle-icon,
+body.site-page .home-account-toggle-icon {
+    font-size: 0.95rem;
+    color: var(--primary-color);
+}
+
+body.products-page .home-account-panel,
+body.site-page .home-account-panel {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    z-index: 960;
+    min-width: min(260px, calc(100vw - 2rem));
+    background: #fff;
+    border: 1px solid var(--home-border);
+    border-top: 3px solid var(--home-sky);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    overflow: hidden;
+}
+
+body.products-page .home-account-panel[hidden],
+body.site-page .home-account-panel[hidden] {
+    display: none;
+}
+
+body.products-page .home-account-panel-title,
+body.site-page .home-account-panel-title {
+    margin: 0;
+    padding: 0.6rem 0.9rem 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+}
+
+body.products-page nav.home-quick-nav .home-account-list,
+body.site-page nav.home-quick-nav .home-account-list {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: none !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 0 0.4rem !important;
+    list-style: none !important;
+    white-space: normal !important;
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.products-page nav.home-quick-nav .home-account-list > li,
+body.site-page nav.home-quick-nav .home-account-list > li {
+    display: block !important;
+    width: 100% !important;
+    position: static !important;
+    text-align: left !important;
+    border-top: 1px dashed var(--home-border);
+}
+
+body.products-page nav.home-quick-nav .home-account-list > li[hidden],
+body.site-page nav.home-quick-nav .home-account-list > li[hidden] {
+    display: none !important;
+}
+
+body.products-page nav.home-quick-nav .home-account-list > li a,
+body.site-page nav.home-quick-nav .home-account-list > li a,
+body.products-page nav.home-quick-nav .home-account-list > li button.home-account-item,
+body.site-page nav.home-quick-nav .home-account-list > li button.home-account-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 0.7rem 0.95rem !important;
+    font-size: 0.88rem !important;
+    text-align: left !important;
+    box-sizing: border-box;
+}
+
+body.products-page .home-account-dropdown.is-guest .home-account-chevron,
+body.site-page .home-account-dropdown.is-guest .home-account-chevron {
+    display: none;
+}
+
+body.products-page .home-account-dropdown.is-guest .home-account-panel,
+body.site-page .home-account-dropdown.is-guest .home-account-panel {
+    display: none !important;
+}
+
+body.products-page .home-account-item,
+body.site-page .home-account-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.7rem 0.95rem;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-color);
+    text-decoration: none;
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+body.products-page .home-account-item:hover,
+body.site-page .home-account-item:hover,
+body.products-page .home-account-item:focus-visible,
+body.site-page .home-account-item:focus-visible {
+    background: #f0f9ff;
+    color: var(--home-deep);
+    outline: none;
+}
+
+body.products-page .home-account-item i,
+body.site-page .home-account-item i {
+    width: 1.1rem;
+    text-align: center;
+    color: var(--home-sky);
+}
+
+body.products-page .home-account-signout-btn,
+body.site-page .home-account-signout-btn {
+    color: var(--error-color);
+}
+
+body.products-page .home-account-signout-btn i,
+body.site-page .home-account-signout-btn i {
+    color: var(--error-color);
+}
+
+body.products-page .home-account-signout-btn:hover,
+body.site-page .home-account-signout-btn:hover,
+body.products-page .home-account-signout-btn:focus-visible,
+body.site-page .home-account-signout-btn:focus-visible {
+    background: #fef2f2;
+    color: #c0392b;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #dc2626;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    pointer-events: none;
+    line-height: 1;
+    border: 2px solid #fff;
+}
+
+.home-account-item .notif-badge {
+    top: 6px;
+    right: 8px;
+    border: none;
+}
+
+body.products-page .home-quick-link,
+body.site-page .home-quick-link {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+body.products-page .home-quick-link:hover,
+body.site-page .home-quick-link:hover,
+body.products-page .home-quick-link:focus-visible,
+body.site-page .home-quick-link:focus-visible,
+body.products-page .home-quick-link.is-active,
+body.site-page .home-quick-link.is-active {
+    background: #f0f9ff;
+    color: var(--home-deep);
+    border-color: #bae6fd;
+}
+
+body.products-page .home-quick-link i,
+body.site-page .home-quick-link i {
+    font-size: 0.8rem;
+    color: var(--home-sky);
+}
+
+body.products-page nav.home-quick-nav.site-top-nav.is-stuck,
+body.site-page nav.home-quick-nav.site-top-nav.is-stuck {
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.1);
+}
+
+body.products-page .products-hero {
+    padding-top: clamp(4rem, 10vw, 6rem);
+    padding-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+body.team-page .team-hero {
+    padding-top: clamp(4rem, 10vw, 6rem);
+    padding-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+body.team-page .team-section {
+    padding-top: 3rem;
+}
+
+/* Sticky nav is in document flow — reduce old fixed-nav top offsets */
+body.site-page main.page-content {
+    margin-top: 0;
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+    padding-bottom: 2rem;
+}
+
+body.site-page .my-wrap,
+body.site-page .success-wrap,
+body.site-page .test-container {
+    margin-top: clamp(1.25rem, 3vw, 2rem) !important;
+}
+
+body.site-page.payment-page .payment-container {
+    margin-top: clamp(1.25rem, 3vw, 2rem);
+}
+
+body.site-page.product-details-page .details-wrap {
+    margin-top: 0;
+    padding-top: clamp(1.25rem, 3vw, 2rem);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 1360px) {
+    body.products-page .home-quick-link--trim,
+    body.site-page .home-quick-link--trim {
+        display: none;
+    }
+}
+
+@media (max-width: 1100px) {
+    body.products-page .home-quick-link,
+    body.site-page .home-quick-link {
+        padding: 0.55rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 992px) {
+    body.products-page nav.home-quick-nav .home-account-panel:not([hidden]) .home-account-list,
+    body.site-page nav.home-quick-nav .home-account-panel:not([hidden]) .home-account-list {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    body.products-page .home-quick-logo .nav-logo-svg,
+    body.site-page .home-quick-logo .nav-logo-svg {
+        display: block;
+        height: 32px !important;
+        min-width: 96px !important;
+        max-width: min(150px, 48vw) !important;
+    }
+
+    body.products-page .home-quick-nav-inner,
+    body.site-page .home-quick-nav-inner {
+        min-height: 4.5rem;
+        padding-top: 0.55rem;
+        padding-bottom: 0.55rem;
+    }
+
+    body.products-page .home-quick-logo .logo-image,
+    body.site-page .home-quick-logo .logo-image {
+        height: 40px;
+    }
+
+    body.products-page .home-account-toggle-label,
+    body.site-page .home-account-toggle-label {
+        max-width: 4.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    body.products-page .home-account-panel,
+    body.site-page .home-account-panel {
+        min-width: 220px;
+    }
+}

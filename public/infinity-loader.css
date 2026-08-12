@@ -1,0 +1,780 @@
+/* ============================================================
+   INFINITY LOADER SYSTEM — Global Loading Experience
+   Brand colors: --primary: #0099cc  --secondary: #006699
+   ============================================================ */
+
+/* ── Reset motion for users who prefer it ── */
+@media (prefers-reduced-motion: reduce) {
+  .il-spin, .il-pulse, .il-shimmer-bg,
+  .il-hero-bg, .il-hero-headline, .il-hero-sub,
+  .il-hero-cta, .il-hero-image,
+  .il-page-enter, .il-page-exit { animation: none !important; transition: none !important; }
+  .il-intro-overlay { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1. INTRO OVERLAY — cinematic hero intro (index.html only)
+   ═══════════════════════════════════════════════════════════ */
+#il-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #0c4a6e 0%, #075985 40%, #0284c7 72%, #0ea5e9 100%);
+  will-change: opacity, transform;
+  pointer-events: all;
+}
+#il-intro.il-hiding {
+  animation: il-intro-out 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+#il-intro.il-hidden { display: none; }
+
+@keyframes il-intro-out {
+  0%   { opacity: 1; transform: scale(1); }
+  60%  { opacity: 0.4; transform: scale(1.04); }
+  100% { opacity: 0; transform: scale(1.08); pointer-events: none; }
+}
+
+/* Brand mark inside intro */
+.il-brand-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  animation: il-brand-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes il-brand-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.il-intro-tagline {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.82);
+  animation: il-fade-in 0.5s 0.5s ease both;
+}
+@keyframes il-fade-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+/* Progress bar inside intro */
+.il-intro-bar-wrap {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(240px, 60vw);
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.18);
+  overflow: hidden;
+}
+.il-intro-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  background: #fff;
+  transition: width 0.4s ease;
+  will-change: width;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. SVG INFINITY ANIMATION — the brand loader
+   ═══════════════════════════════════════════════════════════ */
+.il-infinity-svg {
+  overflow: visible;
+  display: block;
+}
+.il-infinity-path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  animation: il-draw 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards,
+             il-spin-dash 1.8s linear 1.3s infinite;
+  will-change: stroke-dashoffset;
+}
+.il-infinity-glow {
+  fill: none;
+  stroke-linecap: round;
+  opacity: 0.3;
+  animation: il-pulse 2s ease-in-out 1.3s infinite;
+}
+
+@keyframes il-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes il-spin-dash {
+  0%   { stroke-dashoffset: 0; }
+  50%  { stroke-dashoffset: -180; }
+  100% { stroke-dashoffset: -360; }
+}
+@keyframes il-pulse {
+  0%, 100% { opacity: 0.15; }
+  50%       { opacity: 0.4; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. FULLSCREEN LOADER — blocks page until async done
+   ═══════════════════════════════════════════════════════════ */
+#il-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background: rgba(15, 20, 30, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+#il-fullscreen.il-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+#il-fullscreen .il-label {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+}
+#il-fullscreen .il-infinity-svg {
+  filter: drop-shadow(0 4px 24px rgba(0, 204, 255, 0.2));
+}
+#il-fullscreen .il-infinity-path {
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 10px rgba(0, 204, 255, 0.45));
+  animation: il-draw 1.45s cubic-bezier(0.33, 1, 0.68, 1) 0.05s forwards,
+             il-spin-dash 2.4s cubic-bezier(0.45, 0, 0.55, 1) 1.5s infinite;
+}
+#il-fullscreen .il-infinity-glow {
+  stroke: #00ccff;
+  animation: il-pulse 2.4s ease-in-out 1.2s infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. INLINE BUTTON LOADER — replaces button content
+   ═══════════════════════════════════════════════════════════ */
+.il-btn-loading {
+  position: relative;
+  pointer-events: none;
+  cursor: wait;
+}
+.il-btn-loading .il-btn-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: inherit;
+  border-radius: inherit;
+}
+.il-btn-loading .il-btn-original { opacity: 0; }
+
+.il-dot-trio {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+.il-dot-trio span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: il-dot-bounce 0.7s ease-in-out infinite;
+}
+.il-dot-trio span:nth-child(2) { animation-delay: 0.12s; }
+.il-dot-trio span:nth-child(3) { animation-delay: 0.24s; }
+@keyframes il-dot-bounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40%            { transform: scale(1);   opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. SKELETON SCREENS
+   ═══════════════════════════════════════════════════════════ */
+.il-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e8eef5;
+  border-radius: 6px;
+}
+.il-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,0.55) 45%,
+    rgba(255,255,255,0.72) 50%,
+    rgba(255,255,255,0.55) 55%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: il-shimmer 1.4s ease-in-out infinite;
+  will-change: background-position;
+}
+@keyframes il-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Skeleton variants */
+.il-sk-text  { height: 1em;   border-radius: 4px; }
+.il-sk-title { height: 1.5em; border-radius: 4px; }
+.il-sk-img   { border-radius: 10px; aspect-ratio: 4/3; }
+.il-sk-circle{ border-radius: 50%; }
+.il-sk-btn   { height: 40px;  border-radius: 20px; width: 120px; }
+.il-sk-card  {
+  border-radius: 14px;
+  padding: 1.25rem;
+  border: 1px solid #dbe3ee;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Skeleton product card */
+.il-sk-product-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.il-sk-product-img {
+  height: 200px;
+  background: #f1f5f9;
+}
+.il-sk-product-card--catalog {
+  border: 1px solid rgba(8, 145, 178, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+.il-sk-product-card--catalog .il-sk-product-body {
+  padding: 1rem 1rem 1.15rem;
+  align-items: center;
+  text-align: center;
+}
+.il-sk-btn--wide {
+  width: min(240px, 100%);
+  height: 44px;
+  border-radius: 999px;
+  margin-top: 0.25rem;
+}
+.products-catalog-skeleton {
+  display: contents;
+}
+body.products-page .products-wrapper.is-catalog-loading > .product-card {
+  display: none;
+}
+body.products-page .products-wrapper.is-catalog-loading .products-catalog-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+  grid-column: 1 / -1;
+}
+@media (max-width: 768px) {
+  body.products-page .products-wrapper.is-catalog-loading .products-catalog-skeleton {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .il-sk-product-card--catalog .il-sk-product-img {
+    height: 180px;
+  }
+}
+.il-sk-product-img.il-skeleton { border-radius: 0; }
+.il-sk-product-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.65rem; }
+
+/* Skeleton table rows */
+.il-sk-table-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 0.55rem;
+  border-bottom: 1px solid #eef2f7;
+}
+.il-sk-table-row > .il-skeleton { flex: 1; height: 14px; }
+.il-sk-table-row > .il-skeleton:first-child { flex: 2; }
+
+/* Skeleton team member card */
+.il-sk-team-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+.il-sk-team-photo { height: 220px; }
+.il-sk-team-photo.il-skeleton { border-radius: 0; }
+.il-sk-team-body { padding: 1.35rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+
+/* ═══════════════════════════════════════════════════════════
+   6. IMAGE LOADING — blurred placeholder → loaded
+   ═══════════════════════════════════════════════════════════ */
+.il-img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #e8eef5;
+}
+.il-img-wrap img {
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+.il-img-wrap img.il-loading {
+  opacity: 0;
+  filter: blur(6px) scale(1.04);
+}
+.il-img-wrap img.il-loaded {
+  opacity: 1;
+  filter: none;
+}
+
+img.il-loading:not(.hero-logo-image):not(.logo-image) {
+  opacity: 0.72;
+  filter: blur(3px);
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+img.il-loaded {
+  opacity: 1;
+  filter: none;
+}
+.il-img-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 2rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. PAGE TRANSITIONS
+   ═══════════════════════════════════════════════════════════ */
+.il-page-enter {
+  animation: il-page-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes il-page-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Top progress bar for page nav */
+#il-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 100001;
+  background: linear-gradient(90deg, #0099cc, #00ccff);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+#il-progress-bar.il-running {
+  opacity: 1;
+  animation: il-progress-run 1.4s ease-in-out forwards;
+}
+#il-progress-bar.il-done {
+  transform: scaleX(1);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.3s 0.15s ease;
+}
+@keyframes il-progress-run {
+  0%   { transform: scaleX(0); }
+  40%  { transform: scaleX(0.5); }
+  70%  { transform: scaleX(0.78); }
+  100% { transform: scaleX(0.93); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. HERO SEQUENCE ANIMATIONS (index.html) — in-hero only
+   ═══════════════════════════════════════════════════════════ */
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero {
+  opacity: 0;
+}
+
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero-logo-image,
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero-eyebrow,
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero-company-name,
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero-subtitle,
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero-text,
+body.home-page.il-hero-intro:not(.il-hero-complete) .cta-buttons a,
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero-trust-item,
+body.home-page.il-hero-intro:not(.il-hero-complete) .hero-scroll-hint {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Step 1 — background fade */
+.il-animate-bg {
+  animation: il-bg-reveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-bg-reveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Step 2 — logo */
+.il-animate-logo {
+  animation: il-logo-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-logo-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0) scale(0.9) rotate(-1.5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+/* Step 3 — headline */
+.il-animate-headline {
+  animation: il-headline-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-headline-in {
+  from { opacity: 0; transform: translate3d(0, -40px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Eyebrow */
+.il-animate-eyebrow {
+  animation: il-eyebrow-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-eyebrow-in {
+  from { opacity: 0; transform: translate3d(0, -12px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Step 4 — subtitle */
+.il-animate-subtitle {
+  animation: il-subtitle-in 0.6s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+@keyframes il-subtitle-in {
+  from { opacity: 0; transform: translate3d(0, -18px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Step 5 — description */
+.il-animate-description {
+  animation: il-description-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-description-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Step 6 — staggered CTAs */
+.il-animate-cta-left {
+  animation: il-cta-left 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-cta-left {
+  from { opacity: 0; transform: translate3d(-28px, 8px, 0) scale(0.96); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.il-animate-cta-up {
+  animation: il-cta-up 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-cta-up {
+  from { opacity: 0; transform: translate3d(0, 24px, 0) scale(0.96); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.il-animate-cta-right {
+  animation: il-cta-right 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-cta-right {
+  from { opacity: 0; transform: translate3d(28px, 8px, 0) scale(0.96); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Step 7 — trust + scroll */
+.il-animate-trust {
+  animation: il-trust-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-trust-in {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.il-animate-scroll {
+  animation: il-scroll-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes il-scroll-in {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Reduced motion — fade only */
+.il-animate-fade {
+  animation: il-fade-only 0.45s ease both;
+}
+@keyframes il-fade-only {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.home-page.il-hero-intro:not(.il-hero-complete) .hero-logo-image,
+  body.home-page.il-hero-intro:not(.il-hero-complete) .hero-eyebrow,
+  body.home-page.il-hero-intro:not(.il-hero-complete) .hero-company-name,
+  body.home-page.il-hero-intro:not(.il-hero-complete) .hero-subtitle,
+  body.home-page.il-hero-intro:not(.il-hero-complete) .hero-text,
+  body.home-page.il-hero-intro:not(.il-hero-complete) .cta-buttons a,
+  body.home-page.il-hero-intro:not(.il-hero-complete) .hero-trust-item,
+  body.home-page.il-hero-intro:not(.il-hero-complete) .hero-scroll-hint {
+    transform: none !important;
+  }
+
+  .il-animate-bg,
+  .il-animate-logo,
+  .il-animate-headline,
+  .il-animate-eyebrow,
+  .il-animate-subtitle,
+  .il-animate-description,
+  .il-animate-cta-left,
+  .il-animate-cta-up,
+  .il-animate-cta-right,
+  .il-animate-trust,
+  .il-animate-scroll {
+    animation: il-fade-only 0.45s ease both !important;
+  }
+}
+
+body.home-page.il-hero-complete .hero-logo-image,
+body.home-page.il-hero-complete .hero-eyebrow,
+body.home-page.il-hero-complete .hero-company-name,
+body.home-page.il-hero-complete .hero-subtitle,
+body.home-page.il-hero-complete .hero-text,
+body.home-page.il-hero-complete .cta-buttons a,
+body.home-page.il-hero-complete .hero-trust-item,
+body.home-page.il-hero-complete .hero-scroll-hint {
+  will-change: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. SECTION CONTENT LOADING (dashboard, products, etc.)
+   ═══════════════════════════════════════════════════════════ */
+.il-section-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 0.75rem;
+  color: #64748b;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* Tiny inline spinner for section headers */
+.il-mini-spin {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e2e8f0;
+  border-top-color: #0099cc;
+  border-radius: 50%;
+  animation: il-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes il-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Cart drawer: viewport-fixed, internal list scroll only ── */
+.cart-sidebar {
+  position: fixed !important;
+  inset: 0 0 0 auto !important;
+  width: min(100%, 400px) !important;
+  max-width: 400px !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translate3d(100%, 0, 0) !important;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  z-index: 2200 !important;
+  box-sizing: border-box !important;
+}
+
+.cart-sidebar.active {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.cart-sidebar .cart-header,
+.cart-sidebar .cart-footer {
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+}
+
+.cart-sidebar .cart-items {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* ── Product details page skeleton ── */
+body.product-details-page .details-wrap.is-details-loading .details-live {
+  display: none !important;
+}
+
+body.product-details-page .details-wrap.is-details-loading .details-skeleton {
+  display: block;
+}
+
+body.product-details-page .details-skeleton {
+  display: none;
+}
+
+.il-sk-details-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  background: #fff;
+  border: 1px solid #dbe7f3;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.il-sk-details-media {
+  min-height: 280px;
+  background: #f1f5f9;
+}
+
+.il-sk-details-summary {
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.il-sk-details-specs {
+  background: #fff;
+  border: 1px solid #dbe7f3;
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.il-sk-spec-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.il-sk-spec-block:last-child {
+  border-bottom: none;
+}
+
+.il-sk-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.il-sk-btn {
+  height: 44px;
+  border-radius: 999px;
+}
+
+.il-sk-btn--primary {
+  width: min(180px, 100%);
+}
+
+.il-sk-btn--ghost {
+  width: min(200px, 100%);
+}
+
+@media (max-width: 860px) {
+  .il-sk-details-head {
+    grid-template-columns: 1fr;
+  }
+  .il-sk-details-media {
+    min-height: 200px;
+  }
+}
+
+/* Upload / PDF generating overlay on a card */
+.il-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: rgba(248,250,252,0.88);
+  border-radius: inherit;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 0.82rem;
+  color: #475569;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.il-card-overlay.il-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Table skeleton rows inside <tbody> */
+.il-skeleton-tr td {
+  padding: 0.85rem 0.55rem;
+  border-bottom: 1px solid #eef2f7;
+  vertical-align: middle;
+}
+
+.il-sk-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.il-sk-orders-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (max-width: 680px) {
+  .il-sk-team-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Payment - INFINITY Total-Com Solutions</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/infinity-logo1.png">
+    <link rel="stylesheet" href="mazen.css?v=20260603-team-ui">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="site-footer.css?v=20260613">
+    <link rel="stylesheet" href="site-nav.css?v=20260603-nav11">
+    <link rel="stylesheet" href="home-nav-mobile.css?v=20260603-m3">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body.payment-page {
+            background: #f0f4f8;
+        }
+
+        .payment-container {
+            max-width: 1180px;
+            margin: clamp(1.25rem, 3vw, 2rem) auto 2.5rem;
+            padding: clamp(1.25rem, 3vw, 2rem);
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(15, 61, 82, 0.1);
+            border: 1px solid rgba(0, 102, 153, 0.08);
+        }
+
+        .payment-methods h3,
+        .payment-panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 1rem;
+        }
+
+        .payment-methods {
+            margin-bottom: 2rem;
+        }
+
+        .payment-method-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0;
+        }
+
+        /* Desktop layout: use the wide screen better */
+        @media (min-width: 992px) {
+            body {
+                background: #f4f7fb;
+            }
+
+            .payment-container {
+                display: grid;
+                grid-template-columns: 420px 1fr;
+                gap: 1.25rem 1.5rem;
+                align-items: start;
+            }
+
+            .payment-methods {
+                margin-bottom: 0;
+                position: sticky;
+                top: 5.75rem;
+                align-self: start;
+            }
+
+            .payment-methods h3 {
+                margin-top: 0.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .payment-method-selector {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                margin-bottom: 0;
+            }
+
+            .method-option {
+                padding: 1.15rem 0.9rem;
+                border-radius: 12px;
+            }
+
+            .method-option i {
+                font-size: 1.8rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .payment-info-section.visible {
+                margin: 0;
+            }
+
+            .bank-info {
+                margin: 0;
+            }
+        }
+
+        .method-option {
+            position: relative;
+            padding: 1.15rem 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+            background: #fff;
+        }
+
+        .method-option:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 153, 204, 0.45);
+            box-shadow: 0 6px 16px rgba(0, 102, 153, 0.1);
+        }
+
+        .method-option.selected {
+            border-color: var(--primary-color);
+            background: linear-gradient(180deg, rgba(0, 153, 204, 0.08), rgba(0, 153, 204, 0.02));
+            box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.12);
+        }
+
+        .method-option.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 0.45rem;
+            right: 0.45rem;
+            width: 1.35rem;
+            height: 1.35rem;
+            line-height: 1.35rem;
+            font-size: 0.65rem;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        .method-option i {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-bottom: 0.65rem;
+            display: block;
+        }
+
+        .method-option h4 {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .payment-content > div {
+            display: none;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .payment-content > div.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .payment-placeholder {
+            display: block;
+            opacity: 1;
+            transform: none;
+        }
+
+        .payment-info-section {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin: 0;
+        }
+
+        @media (min-width: 992px) {
+            /* On desktop we always show a right panel (placeholder/instructions) */
+            .payment-info-section {
+                max-height: none;
+                overflow: visible;
+                opacity: 1;
+            }
+            .payment-info-section.visible {
+                margin: 0;
+            }
+        }
+
+        .payment-info-section.visible {
+            max-height: 2000px;
+            opacity: 1;
+            margin: 2rem 0;
+        }
+
+        .payment-details-card {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+        }
+
+        .bank-info {
+            margin: 0;
+            padding: 1.35rem;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .bank-info h3, .instapay-info h3 {
+            color: #0f172a;
+            margin: 0 0 1.15rem;
+            font-size: 1.15rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bank-info h3 i, .instapay-info h3 i {
+            color: var(--primary-color);
+        }
+
+        .bank-details, .instapay-details {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: minmax(110px, 32%) 1fr auto;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.7rem 0.85rem;
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid #e8eef3;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #475569;
+        }
+
+        .detail-value {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            color: #0369a1;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            text-align: left;
+            max-width: none;
+        }
+
+        .copy-btn {
+            background: #fff;
+            color: var(--secondary-color);
+            border: 1px solid #cbd5e1;
+            padding: 0.4rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .copy-btn i {
+            font-size: 0.75rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .copy-btn.copied {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: #fff;
+        }
+
+        .payment-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.15rem;
+        }
+
+        .payment-step-pill {
+            flex: 1 1 auto;
+            min-width: 0;
+            padding: 0.45rem 0.65rem;
+            border-radius: 999px;
+            background: rgba(0, 153, 204, 0.1);
+            color: #0369a1;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .order-summary {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .order-summary h3 {
+            color: #0f172a;
+            margin: 0 0 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .order-summary h3 i {
+            color: var(--primary-color);
+        }
+
+        #order-details .detail-row {
+            grid-template-columns: 1fr auto;
+            background: #fff;
+        }
+
+        .vat-checkbox {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vat-checkbox input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+
+        .vat-checkbox label {
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .order-totals {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .total-row.final {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-top: 2px solid #e1e8ed;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .submit-order-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 102, 153, 0.28);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .submit-order-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(0, 102, 153, 0.35);
+        }
+
+        .submit-order-btn:disabled {
+            background: #cbd5e1;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .payment-instructions {
+            margin-top: 1.25rem;
+            padding: 1.15rem 1.25rem;
+            background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            color: #0c4a6e;
+        }
+
+        .payment-instructions h4 {
+            color: #0369a1;
+            margin: 0 0 0.75rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .payment-instructions ol {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .payment-instructions li {
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .payment-receipt-wrap {
+            display: none;
+            margin-top: 1.15rem;
+            padding: 1.15rem;
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 12px rgba(15, 61, 82, 0.04);
+        }
+
+        .payment-receipt-wrap.visible {
+            display: block;
+        }
+
+        .payment-receipt-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .payment-receipt-wrap h4 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .payment-receipt-wrap h4 i {
+            color: var(--primary-color);
+        }
+
+        .receipt-required-badge {
+            flex-shrink: 0;
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .payment-receipt-wrap .receipt-hint {
+            margin: 0 0 1rem;
+            font-size: 0.88rem;
+            color: #64748b;
+            line-height: 1.55;
+        }
+
+        .payment-receipt-input {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .receipt-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem 1rem;
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+            text-align: center;
+        }
+
+        .receipt-dropzone:hover,
+        .receipt-dropzone.dragover {
+            border-color: var(--primary-color);
+            background: rgba(0, 153, 204, 0.06);
+        }
+
+        .receipt-dropzone i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            opacity: 0.85;
+        }
+
+        .receipt-dropzone-title {
+            font-weight: 600;
+            color: #334155;
+            font-size: 0.95rem;
+        }
+
+        .receipt-dropzone-sub {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .payment-receipt-preview {
+            display: none;
+        }
+
+        .payment-receipt-preview.visible {
+            display: block;
+        }
+
+        .receipt-preview-card {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.85rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+        }
+
+        .receipt-preview-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .receipt-preview-meta strong {
+            display: block;
+            color: #166534;
+            font-size: 0.92rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .receipt-preview-meta .receipt-file-name {
+            font-size: 0.82rem;
+            color: #64748b;
+            word-break: break-all;
+        }
+
+        .receipt-change-btn,
+        .receipt-remove-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 0.45rem 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .receipt-change-btn {
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        .receipt-change-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .receipt-remove-btn {
+            background: #fff;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            margin-top: 0.35rem;
+            width: 100%;
+        }
+
+        .receipt-preview-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .payment-receipt-error {
+            margin-top: 0.65rem;
+            padding: 0.55rem 0.75rem;
+            font-size: 0.85rem;
+            color: #b91c1c;
+            background: #fef2f2;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+            display: none;
+        }
+
+        .payment-receipt-error.visible {
+            display: block;
+        }
+
+        .receipt-dropzone.hidden {
+            display: none;
+        }
+
+        .cash-info {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e1e8ed;
+        }
+
+        .cash-info i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .cash-info p {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Visa Payment Form Styles */
+        .visa-form {
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #999;
+        }
+
+        .payment-security {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f0f8ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            color: #0066cc;
+            font-size: 0.9rem;
+        }
+
+        .payment-security i {
+            color: #22c55e;
+        }
+
+        .processing-payment {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .processing-payment.show {
+            display: block;
+        }
+
+        .payment-result {
+            display: none;
+            margin: 1rem 0;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            text-align: left;
+        }
+
+        .payment-result.show {
+            display: block;
+        }
+
+        .payment-result.success {
+            background: #ecfdf5;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .payment-result.error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .payment-result h4 {
+            margin: 0 0 0.5rem 0;
+        }
+
+        .payment-result p {
+            margin: 0.3rem 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .payment-container {
+                margin: 0.75rem;
+                padding: 1rem;
+            }
+
+            .bank-info {
+                padding: 1rem;
+            }
+
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 0.4rem;
+                text-align: left;
+            }
+
+            .detail-value {
+                font-size: 0.92rem;
+            }
+
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .receipt-preview-card {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .receipt-preview-actions {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .receipt-remove-btn {
+                width: auto;
+                margin-top: 0;
+            }
+
+            .payment-step-pill {
+                flex: 1 1 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="payment-page site-page">
+    <nav class="home-quick-nav site-top-nav" aria-label="Site navigation">
+        <div class="container home-quick-nav-inner">
+            <a href="index.html" class="logo home-quick-logo">
+                <img src="assets/images/infinity-logo.png" alt="" class="logo-image" width="48" height="48">
+                <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" class="nav-logo-svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0f3d52;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#5cb3d4;stop-opacity:1" />
+                            <stop offset="60%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0f3d52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="10" y="100" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="130" letter-spacing="6" fill="url(#infinityGrad)">INFINITY</text>
+                    <text x="300" y="145" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="25" letter-spacing="1" fill="#3a7a95">Total-Com Solutions</text>
+                </svg>
+                <span class="visually-hidden">INFINITY Total-Com Solutions — Home</span>
+            </a>
+            <div class="home-quick-links">
+                <a href="index.html" class="home-quick-link"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+                <a href="index.html#about" class="home-quick-link"><i class="fas fa-building" aria-hidden="true"></i> About</a>
+                <a href="index.html#mission" class="home-quick-link home-quick-link--trim"><i class="fas fa-bullseye" aria-hidden="true"></i> Mission</a>
+                <a href="index.html#services" class="home-quick-link"><i class="fas fa-wrench" aria-hidden="true"></i> Services</a>
+                <a href="products.html" class="home-quick-link"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Products</a>
+                <a href="index.html#clients" class="home-quick-link home-quick-link--trim"><i class="fas fa-handshake" aria-hidden="true"></i> Clients</a>
+                <a href="team.html" class="home-quick-link" title="Our Team"><i class="fas fa-users" aria-hidden="true"></i> Team</a>
+                <a href="index.html#contact" class="home-quick-link"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Contact</a>
+            </div>
+            <div class="home-quick-nav-actions">
+                <div class="home-account-dropdown is-guest" id="home-account-menu">
+                    <button type="button" class="home-account-toggle" id="home-account-toggle" aria-expanded="false" aria-controls="home-account-panel" aria-haspopup="true">
+                        <i class="fas fa-user home-account-toggle-icon" aria-hidden="true"></i>
+                        <span class="home-account-toggle-label">Sign In</span>
+                        <i class="fas fa-chevron-down home-account-chevron" aria-hidden="true"></i>
+                    </button>
+                    <div class="home-account-panel" id="home-account-panel" hidden>
+                        <p class="home-account-panel-title">Your account</p>
+                        <ul class="home-account-list">
+                            <li class="user-orders-link" hidden>
+                                <a href="user-dashboard.html" class="home-account-item my-orders-nav-link">
+                                    <i class="fas fa-receipt" aria-hidden="true"></i> My Orders
+                                </a>
+                            </li>
+                            <li class="staff-dashboard-link" hidden>
+                                <a href="dashboard.html" class="home-account-item dashboard-nav-link">
+                                    <i class="fas fa-chart-line" aria-hidden="true"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="home-account-signin-item" hidden>
+                                <a href="auth.html" class="home-account-item account-link">
+                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+                                </a>
+                            </li>
+                            <li class="home-account-signout-item" hidden>
+                                <button type="button" class="home-account-item home-account-signout-btn" id="home-account-signout">
+                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="payment-container">
+        <div class="payment-methods">
+            <h3 class="payment-panel-title"><i class="fas fa-wallet"></i> Select Payment Method</h3>
+            <div class="payment-method-selector">
+                <div class="method-option" data-method="visa">
+                    <i class="fas fa-credit-card"></i>
+                    <h4>Visa Card</h4>
+                </div>
+                <div class="method-option" data-method="bank">
+                    <i class="fas fa-university"></i>
+                    <h4>Bank Transfer</h4>
+                </div>
+                <div class="method-option" data-method="instapay">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>InstaPay</h4>
+                </div>
+                <div class="method-option" data-method="cash">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h4>Cash on Delivery</h4>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="payment-info-section">
+            <div class="payment-content">
+                <div id="payment-placeholder" class="payment-placeholder active">
+                    <div class="bank-info payment-placeholder-card" style="margin:0;">
+                        <div style="text-align:center; padding: 1rem 0;">
+                            <i class="fas fa-hand-pointer" style="font-size: 2.5rem; color: var(--primary-color); opacity: 0.7; margin-bottom: 0.75rem;"></i>
+                            <h3>Select a payment method</h3>
+                            <p style="margin:0.5rem 0 0; color: var(--text-light); line-height: 1.6; max-width: 36ch; margin-inline: auto;">
+                                Choose an option on the left to view payment details and complete your order.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bank Transfer Content -->
+                <div id="bank-content">
+                    <div class="bank-info payment-details-card">
+                        <h3><i class="fas fa-university"></i> Bank Transfer Information</h3>
+                        <div class="payment-steps" aria-hidden="true">
+                            <span class="payment-step-pill">1. Copy details</span>
+                            <span class="payment-step-pill">2. Transfer</span>
+                            <span class="payment-step-pill">3. Upload receipt</span>
+                        </div>
+                        <div class="bank-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Company Name:</span>
+                                <span class="detail-value">INFINITY</span>
+                                <button type="button" class="copy-btn" data-copy="INFINITY"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Full Name:</span>
+                                <span class="detail-value">INFINITY for specialized security systems</span>
+                                <button class="copy-btn" data-copy="INFINITY for specialized security systems"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Swift Code:</span>
+                                <span class="detail-value">CIBEEGCX160</span>
+                                <button class="copy-btn" data-copy="CIBEEGCX160"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Account No.:</span>
+                                <span class="detail-value">100031074171</span>
+                                <button class="copy-btn" data-copy="100031074171"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">IBAN:</span>
+                                <span class="detail-value">EG950010016000000100031074171</span>
+                                <button class="copy-btn" data-copy="EG950010016000000100031074171"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Bank Branch Code:</span>
+                                <span class="detail-value">160</span>
+                                <button class="copy-btn" data-copy="160"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Bank Name:</span>
+                                <span class="detail-value">CIB</span>
+                                <button class="copy-btn" data-copy="CIB"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Bank Branch:</span>
+                                <span class="detail-value">Zahraa Maadi</span>
+                                <button class="copy-btn" data-copy="Zahraa Maadi"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                        <div class="payment-receipt-wrap" data-receipt-for="bank">
+                            <div class="payment-receipt-header">
+                                <h4><i class="fas fa-receipt"></i> Payment receipt</h4>
+                                <span class="receipt-required-badge">Required</span>
+                            </div>
+                            <p class="receipt-hint">Upload a screenshot or photo of your transfer confirmation so we can verify your payment.</p>
+                            <input type="file" class="payment-receipt-input" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" aria-label="Upload bank transfer receipt">
+                            <label class="receipt-dropzone" tabindex="0">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="receipt-dropzone-title">Tap to upload or drag image here</span>
+                                <span class="receipt-dropzone-sub">PNG, JPG or WEBP · max 8 MB</span>
+                            </label>
+                            <div class="payment-receipt-preview">
+                                <div class="receipt-preview-card">
+                                    <img class="receipt-preview-img" alt="Receipt preview">
+                                    <div class="receipt-preview-meta">
+                                        <strong><i class="fas fa-check-circle"></i> Receipt attached</strong>
+                                        <span class="receipt-file-name"></span>
+                                    </div>
+                                    <div class="receipt-preview-actions">
+                                        <button type="button" class="receipt-change-btn">Change</button>
+                                        <button type="button" class="receipt-remove-btn">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="payment-receipt-error" role="alert"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- InstaPay Content -->
+                <div id="instapay-content">
+                    <div class="bank-info payment-details-card">
+                        <h3><i class="fas fa-mobile-alt"></i> InstaPay Information</h3>
+                        <div class="payment-steps" aria-hidden="true">
+                            <span class="payment-step-pill">1. Copy number</span>
+                            <span class="payment-step-pill">2. Send payment</span>
+                            <span class="payment-step-pill">3. Upload receipt</span>
+                        </div>
+                        <div class="bank-details">
+                            <div class="detail-row">
+                                <span class="detail-label">InstaPay Number:</span>
+                                <span class="detail-value">+20 10 21111480</span>
+                                <button class="copy-btn" data-copy="+20 10 21111480"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Account Name:</span>
+                                <span class="detail-value">INFINITY</span>
+                                <button type="button" class="copy-btn" data-copy="INFINITY"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                        <div class="payment-receipt-wrap" data-receipt-for="instapay">
+                            <div class="payment-receipt-header">
+                                <h4><i class="fas fa-receipt"></i> Payment receipt</h4>
+                                <span class="receipt-required-badge">Required</span>
+                            </div>
+                            <p class="receipt-hint">Upload a screenshot of your InstaPay transaction so we can match it to your order.</p>
+                            <input type="file" class="payment-receipt-input" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" aria-label="Upload InstaPay receipt">
+                            <label class="receipt-dropzone" tabindex="0">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="receipt-dropzone-title">Tap to upload or drag image here</span>
+                                <span class="receipt-dropzone-sub">PNG, JPG or WEBP · max 8 MB</span>
+                            </label>
+                            <div class="payment-receipt-preview">
+                                <div class="receipt-preview-card">
+                                    <img class="receipt-preview-img" alt="Receipt preview">
+                                    <div class="receipt-preview-meta">
+                                        <strong><i class="fas fa-check-circle"></i> Receipt attached</strong>
+                                        <span class="receipt-file-name"></span>
+                                    </div>
+                                    <div class="receipt-preview-actions">
+                                        <button type="button" class="receipt-change-btn">Change</button>
+                                        <button type="button" class="receipt-remove-btn">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="payment-receipt-error" role="alert"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cash on Delivery Content -->
+                <div id="cash-content">
+                    <div class="cash-info">
+                        <i class="fas fa-truck"></i>
+                        <h3>Cash on Delivery</h3>
+                        <p>Pay in cash when your order is delivered to your doorstep.</p>
+                        <p>Our delivery team will contact you to arrange the delivery time.</p>
+                    </div>
+                </div>
+
+                <!-- Visa Payment Content -->
+                <div id="visa-content">
+                    <div class="bank-info">
+                        <h3>Visa Card Payment</h3>
+                        <form id="visa-payment-form" class="visa-form">
+                            <div class="form-group">
+                                <label for="card-number">Card Number</label>
+                                <input type="text" id="card-number" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiry-date">Expiry Date</label>
+                                    <input type="text" id="expiry-date" name="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cardholder-name">Cardholder Name</label>
+                                <input type="text" id="cardholder-name" name="cardholderName" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing-email">Email Address</label>
+                                <input type="email" id="billing-email" name="billingEmail" placeholder="john@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing-phone">Phone Number</label>
+                                <input type="tel" id="billing-phone" name="billingPhone" placeholder="+201234567890" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing-address">Billing Address</label>
+                                <textarea id="billing-address" name="billingAddress" placeholder="Enter your billing address" rows="3" required></textarea>
+                            </div>
+                            <div class="payment-security">
+                                <i class="fas fa-lock"></i>
+                                <span>Your payment information is secure and encrypted</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <h3><i class="fas fa-shopping-bag"></i> Order Summary</h3>
+                <div id="order-details">
+                    <!-- Order details will be populated by JavaScript -->
+                </div>
+
+                <div class="vat-checkbox">
+                    <input type="checkbox" id="vat-checkbox">
+                    <label for="vat-checkbox">Add 14% VAT</label>
+                </div>
+
+                <div class="order-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">EGP 0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>VAT (14%):</span>
+                        <span id="vat-amount">EGP 0.00</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Total:</span>
+                        <span id="final-total">EGP 0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <button id="submit-order" class="submit-order-btn" disabled type="button">
+                <i class="fas fa-paper-plane"></i> Submit Order
+            </button>
+
+            <div id="processing-payment" class="processing-payment">
+                <div class="spinner"></div>
+                <h3>Processing Payment...</h3>
+                <p>Please wait while we process your payment securely.</p>
+            </div>
+
+            <div id="payment-result" class="payment-result" role="status" aria-live="polite"></div>
+
+            <div class="payment-instructions">
+                <h4><i class="fas fa-info-circle"></i> Payment Instructions</h4>
+                <ol>
+                    <li>Select your preferred payment method above.</li>
+                    <li>For bank transfer or InstaPay, copy the payment details and complete the transfer.</li>
+                    <li>Upload a screenshot or photo of your payment receipt before submitting the order.</li>
+                    <li>Our team will verify your payment and confirm your order.</li>
+                    <li>Our team will contact you to confirm your order.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+
+    <div data-site-footer-mount></div>
+    <script src="site-footer.js?v=20260613"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Require login before allowing payment
+            (async () => {
+                try {
+                    const res = await fetch("/api/user", { credentials: "include" });
+                    if (!res.ok) {
+                        window.location.href = "/auth.html";
+                    }
+                } catch (e) {
+                    window.location.href = "/auth.html";
+                }
+            })();
+
+            // Payment method selection
+            const methodOptions = document.querySelectorAll('.method-option');
+            const paymentContents = document.querySelectorAll('.payment-content > div');
+            const paymentInfoSection = document.querySelector('.payment-info-section');
+            const submitOrderBtn = document.getElementById('submit-order');
+            const processingPayment = document.getElementById('processing-payment');
+            const paymentResult = document.getElementById('payment-result');
+            let isSubmittingOrder = false;
+            let orderCompleted = false;
+            let paymentReceiptData = null;
+            let paymentReceiptFileName = '';
+
+            function getActiveReceiptPanel() {
+                const method = document.querySelector('.method-option.selected')?.dataset?.method;
+                if (method !== 'bank' && method !== 'instapay') return null;
+                return document.querySelector(`.payment-receipt-wrap[data-receipt-for="${method}"]`);
+            }
+
+            function resetReceiptPanel(panel) {
+                if (!panel) return;
+                const input = panel.querySelector('.payment-receipt-input');
+                const preview = panel.querySelector('.payment-receipt-preview');
+                const dropzone = panel.querySelector('.receipt-dropzone');
+                const err = panel.querySelector('.payment-receipt-error');
+                if (input) input.value = '';
+                if (preview) preview.classList.remove('visible');
+                if (dropzone) dropzone.classList.remove('hidden');
+                if (err) {
+                    err.textContent = '';
+                    err.classList.remove('visible');
+                }
+            }
+
+            function clearReceiptPanels() {
+                paymentReceiptData = null;
+                paymentReceiptFileName = '';
+                document.querySelectorAll('.payment-receipt-wrap').forEach((panel) => {
+                    panel.classList.remove('visible');
+                    resetReceiptPanel(panel);
+                });
+            }
+
+            function setReceiptPreview(panel, dataUrl, fileName) {
+                const preview = panel.querySelector('.payment-receipt-preview');
+                const previewImg = panel.querySelector('.receipt-preview-img');
+                const fileNameEl = panel.querySelector('.receipt-file-name');
+                const dropzone = panel.querySelector('.receipt-dropzone');
+                const err = panel.querySelector('.payment-receipt-error');
+                paymentReceiptData = dataUrl;
+                paymentReceiptFileName = fileName;
+                if (previewImg) previewImg.src = dataUrl;
+                if (fileNameEl) fileNameEl.textContent = fileName;
+                if (preview) preview.classList.add('visible');
+                if (dropzone) dropzone.classList.add('hidden');
+                if (err) {
+                    err.textContent = '';
+                    err.classList.remove('visible');
+                }
+            }
+
+            function clearReceiptInPanel(panel) {
+                paymentReceiptData = null;
+                paymentReceiptFileName = '';
+                resetReceiptPanel(panel);
+            }
+
+            function showReceiptError(message) {
+                const panel = getActiveReceiptPanel();
+                if (!panel) return;
+                const err = panel.querySelector('.payment-receipt-error');
+                if (!err) return;
+                err.textContent = message;
+                err.classList.toggle('visible', !!message);
+            }
+
+            function compressReceiptImage(file, maxDim = 1400, quality = 0.82) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const img = new Image();
+                        img.onload = () => {
+                            let { width, height } = img;
+                            const scale = Math.min(1, maxDim / Math.max(width, height));
+                            width = Math.round(width * scale);
+                            height = Math.round(height * scale);
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                            resolve(dataUrl);
+                        };
+                        img.onerror = () => reject(new Error('Could not read image file'));
+                        img.src = reader.result;
+                    };
+                    reader.onerror = () => reject(new Error('Could not read image file'));
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            async function handleReceiptFile(file, panel) {
+                if (!file || !panel) return;
+                const input = panel.querySelector('.payment-receipt-input');
+                if (!file.type.startsWith('image/')) {
+                    if (input) input.value = '';
+                    showReceiptError('Please choose an image file (PNG, JPG, or WEBP).');
+                    return;
+                }
+                if (file.size > 8 * 1024 * 1024) {
+                    if (input) input.value = '';
+                    showReceiptError('Image is too large. Please use a file under 8 MB.');
+                    return;
+                }
+                try {
+                    const dataUrl = await compressReceiptImage(file);
+                    setReceiptPreview(panel, dataUrl, file.name);
+                } catch (e) {
+                    if (input) input.value = '';
+                    paymentReceiptData = null;
+                    showReceiptError(e.message || 'Failed to process image.');
+                }
+            }
+
+            document.querySelectorAll('.payment-receipt-wrap').forEach((panel) => {
+                const input = panel.querySelector('.payment-receipt-input');
+                const dropzone = panel.querySelector('.receipt-dropzone');
+
+                input?.addEventListener('change', function() {
+                    handleReceiptFile(this.files?.[0], panel);
+                });
+
+                dropzone?.addEventListener('click', (e) => {
+                    if (e.target.closest('.receipt-change-btn, .receipt-remove-btn')) return;
+                    input?.click();
+                });
+
+                dropzone?.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        input?.click();
+                    }
+                });
+
+                dropzone?.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('dragover');
+                });
+                dropzone?.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+                dropzone?.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
+                    const file = e.dataTransfer?.files?.[0];
+                    if (file) handleReceiptFile(file, panel);
+                });
+
+                panel.querySelector('.receipt-change-btn')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    input?.click();
+                });
+
+                panel.querySelector('.receipt-remove-btn')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    clearReceiptInPanel(panel);
+                });
+            });
+
+            function showProcessing() {
+                if (orderCompleted) return;
+                isSubmittingOrder = true;
+                submitOrderBtn.disabled = true;
+                submitOrderBtn.style.display = 'none';
+                processingPayment.classList.add('show');
+                if (window.InfinityLoader) InfinityLoader.showFullscreen('Processing payment…');
+                paymentResult.className = 'payment-result';
+                paymentResult.innerHTML = '';
+            }
+
+            function hideProcessing() {
+                processingPayment.classList.remove('show');
+                if (window.InfinityLoader) InfinityLoader.hideFullscreen();
+                submitOrderBtn.style.display = 'block';
+                submitOrderBtn.disabled = orderCompleted;
+                isSubmittingOrder = false;
+            }
+
+            function showResult(type, title, details) {
+                paymentResult.className = `payment-result show ${type}`;
+                paymentResult.innerHTML = `
+                    <h4>${title}</h4>
+                    ${details.map(d => `<p>${d}</p>`).join('')}
+                `;
+                paymentResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // Visa form input formatting
+            const cardNumberInput = document.getElementById('card-number');
+            const expiryDateInput = document.getElementById('expiry-date');
+            const cvvInput = document.getElementById('cvv');
+
+            // Format card number with spaces
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = value.replace(/\d{4}(?=.)/g, '$& ');
+                    e.target.value = formattedValue;
+                });
+            }
+
+            // Format expiry date
+            if (expiryDateInput) {
+                expiryDateInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                    }
+                    e.target.value = value;
+                });
+            }
+
+            // Format CVV (numbers only)
+            if (cvvInput) {
+                cvvInput.addEventListener('input', function(e) {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                });
+            }
+
+            methodOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    methodOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+
+                    // Hide all content sections
+                    paymentContents.forEach(content => content.classList.remove('active'));
+                    const placeholder = document.getElementById('payment-placeholder');
+                    if (placeholder) placeholder.classList.remove('active');
+                    // Show selected content
+                    const method = this.dataset.method;
+                    document.getElementById(`${method}-content`).classList.add('active');
+
+                    clearReceiptPanels();
+                    if (method === 'bank' || method === 'instapay') {
+                        const panel = document.querySelector(`.payment-receipt-wrap[data-receipt-for="${method}"]`);
+                        if (panel) panel.classList.add('visible');
+                    }
+
+                    // Show payment info section
+                    paymentInfoSection.classList.add('visible');
+
+                    // Scroll to payment info section
+                    paymentInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    // Enable submit button when a payment method is selected
+                    submitOrderBtn.disabled = false;
+                });
+            });
+
+            // Copy button functionality
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const textToCopy = this.dataset.copy;
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        this.textContent = 'Copied!';
+                        this.classList.add('copied');
+                        setTimeout(() => {
+                            this.textContent = 'Copy';
+                            this.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            });
+
+            // Get cart data from account (MongoDB) with localStorage fallback
+            let cart = [];
+            async function loadCart() {
+                try {
+                    const res = await fetch('/api/cart', { credentials: 'include' });
+                    if (!res.ok) throw new Error('Not authenticated');
+                    const data = await res.json();
+                    cart = Array.isArray(data.items) ? data.items : [];
+                } catch (e) {
+                    cart = JSON.parse(localStorage.getItem('cart')) || [];
+                }
+            }
+            const orderDetails = document.getElementById('order-details');
+            const subtotalElement = document.getElementById('subtotal');
+            const vatAmountElement = document.getElementById('vat-amount');
+            const finalTotalElement = document.getElementById('final-total');
+            const vatCheckbox = document.getElementById('vat-checkbox');
+
+            // Calculate and display order details
+            function updateOrderSummary() {
+                let subtotal = 0;
+                let html = '';
+
+                cart.forEach(item => {
+                    const itemTotal = (item.price + item.installation) * item.quantity;
+                    subtotal += itemTotal;
+                    html += `
+                        <div class="detail-row">
+                            <span class="detail-label">${item.name} × ${item.quantity}</span>
+                            <span class="detail-value">EGP ${itemTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                orderDetails.innerHTML = html;
+
+                // Calculate VAT and total
+                const vat = vatCheckbox.checked ? subtotal * 0.14 : 0;
+                const total = subtotal + vat;
+
+                // Update display
+                subtotalElement.textContent = `EGP ${subtotal.toFixed(2)}`;
+                vatAmountElement.textContent = `EGP ${vat.toFixed(2)}`;
+                finalTotalElement.textContent = `EGP ${total.toFixed(2)}`;
+            }
+
+            // Initial load + update
+            (async () => {
+                await loadCart();
+                updateOrderSummary();
+            })();
+
+            // Update when VAT checkbox changes
+            vatCheckbox.addEventListener('change', updateOrderSummary);
+
+            // Handle order submission
+            submitOrderBtn.addEventListener('click', async function() {
+                if (isSubmittingOrder || orderCompleted) return;
+                const selectedMethod = document.querySelector('.method-option.selected');
+                if (!selectedMethod) {
+                    showResult('error', 'Select a Payment Method', ['Please select a payment method first.']);
+                    return;
+                }
+                if (!Array.isArray(cart) || cart.length === 0) {
+                    showResult('error', 'Cart Is Empty', ['Add at least one item before submitting your order.']);
+                    return;
+                }
+
+                const method = selectedMethod.dataset.method;
+                const total = finalTotalElement.textContent;
+
+                if (method === 'visa') {
+                    // Handle Visa payment
+                    await handleVisaPayment();
+                } else {
+                    // Save non-card order to backend (MongoDB)
+                    try {
+                        if (isSubmittingOrder) return;
+                        if ((method === 'bank' || method === 'instapay') && !paymentReceiptData) {
+                            showResult('error', 'Receipt Required', [
+                                'Please upload a screenshot or photo of your payment receipt before submitting.'
+                            ]);
+                            getActiveReceiptPanel()?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            return;
+                        }
+                        showProcessing();
+                        const amount = parseFloat(finalTotalElement.textContent.replace('EGP ', ''));
+                        const payload = {
+                            paymentMethod: method,
+                            amount,
+                            currency: 'EGP',
+                            vatApplied: vatCheckbox.checked,
+                            orderItems: cart
+                        };
+                        if (method === 'bank' || method === 'instapay') {
+                            payload.paymentReceiptData = paymentReceiptData;
+                        }
+                        const response = await fetch('/api/orders', {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const result = await response.json();
+                        if (!response.ok) throw new Error(result.error || 'Failed to create order');
+
+                        orderCompleted = true;
+                        submitOrderBtn.disabled = true;
+                        submitOrderBtn.textContent = 'Order Submitted';
+                        cart = [];
+                        updateOrderSummary();
+                        try { await fetch('/api/cart', { method: 'DELETE', credentials: 'include' }); } catch (e) {}
+                        localStorage.removeItem('cart');
+                        window.location.href = `/order-success.html?orderId=${encodeURIComponent(result.orderId)}`;
+                    } catch (error) {
+                        showResult('error', 'Order Failed', [error.message || 'Could not save order. Please try again.']);
+                    } finally {
+                        hideProcessing();
+                    }
+                }
+            });
+
+            // Handle Visa payment
+            async function handleVisaPayment() {
+                if (isSubmittingOrder || orderCompleted) return;
+                const visaForm = document.getElementById('visa-payment-form');
+                const formData = new FormData(visaForm);
+
+                // Validate form
+                if (!visaForm.checkValidity()) {
+                    visaForm.reportValidity();
+                    return;
+                }
+
+                // Show processing
+                showProcessing();
+
+                try {
+                    const paymentData = {
+                        cardNumber: formData.get('cardNumber').replace(/\s/g, ''),
+                        expiryDate: formData.get('expiryDate'),
+                        cvv: formData.get('cvv'),
+                        cardholderName: formData.get('cardholderName'),
+                        billingEmail: formData.get('billingEmail'),
+                        billingPhone: formData.get('billingPhone'),
+                        billingAddress: formData.get('billingAddress'),
+                        amount: parseFloat(finalTotalElement.textContent.replace('EGP ', '')),
+                        currency: 'EGP',
+                        orderItems: cart
+                    };
+
+                    const response = await fetch('/api/process-payment', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(paymentData)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        orderCompleted = true;
+                        submitOrderBtn.disabled = true;
+                        submitOrderBtn.textContent = 'Order Submitted';
+                        cart = [];
+                        updateOrderSummary();
+                        // Clear cart after successful payment
+                        try { await fetch('/api/cart', { method: 'DELETE', credentials: 'include' }); } catch (e) {}
+                        localStorage.removeItem('cart');
+                        window.location.href = `/order-success.html?orderId=${encodeURIComponent(result.orderId || '')}`;
+                    } else {
+                        throw new Error(result.error || 'Payment failed');
+                    }
+                } catch (error) {
+                    showResult('error', 'Payment Failed', [error.message || 'Payment could not be completed.']);
+                } finally {
+                    hideProcessing();
+                }
+            }
+        });
+    </script>
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="script.js?v=20260603-6"></script>
+</body>
+</html> 

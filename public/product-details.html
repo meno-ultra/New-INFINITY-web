@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - INFINITY Total-Com Solutions</title>
+    <meta name="description" content="View product details, pricing, and specifications for INFINITY GPS tracking and fleet accessories.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://infinity-lbvn.onrender.com/product-details.html">
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="INFINITY Total-Com Solutions">
+    <meta property="og:title" content="Product Details - INFINITY Total-Com Solutions">
+    <meta property="og:description" content="View product details, pricing, and specifications for INFINITY GPS tracking and fleet accessories.">
+    <meta property="og:url" content="https://infinity-lbvn.onrender.com/product-details.html">
+    <meta property="og:image" content="https://infinity-lbvn.onrender.com/assets/images/infinity-logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Product Details - INFINITY Total-Com Solutions">
+    <meta name="twitter:description" content="View product details, pricing, and specifications for INFINITY GPS tracking and fleet accessories.">
+    <meta name="twitter:image" content="https://infinity-lbvn.onrender.com/assets/images/infinity-logo.png">
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/infinity-logo1.png">
+    <link rel="stylesheet" href="mazen.css?v=20260603-team-ui">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="site-footer.css?v=20260613">
+    <link rel="stylesheet" href="cart-drawer.css?v=20260609">
+    <link rel="stylesheet" href="site-nav.css?v=20260603-nav11">
+    <link rel="stylesheet" href="home-nav-mobile.css?v=20260603-m4">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Full-width-friendly layout; scoped so global nav styles stay intact */
+        body.product-details-page { background: #e8eef5; }
+        /* Avoid scroll-reveal hiding product content on load */
+        body.product-details-page section.fade-in {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+        body.product-details-page .cart-sidebar {
+            z-index: 2200;
+        }
+        body.product-details-page .home-quick-nav-cart.cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 48px;
+            min-height: 48px;
+            margin-left: 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        body.product-details-page .cart-icon:hover {
+            background: rgba(8, 145, 178, 0.1);
+            color: var(--primary-color);
+        }
+        body.product-details-page .cart-icon i,
+        body.product-details-page .cart-icon .cart-count {
+            pointer-events: none;
+        }
+        .details-wrap {
+            width: 100%;
+            max-width: 1280px;
+            margin: 7rem auto 2.1rem;
+            padding: 0 1rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+        .details-head {
+            display: grid;
+            grid-template-columns: minmax(280px, 360px) 1fr;
+            gap: 0;
+            margin: 0;
+            align-items: stretch;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid #dbe7f3;
+            border-radius: 16px;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1);
+            overflow: hidden;
+        }
+        .details-media, .details-summary, .details-specs {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, .06);
+        }
+        .details-head .details-media,
+        .details-head .details-summary {
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+        .details-head .details-media {
+            padding: 1.1rem;
+            background: #fff;
+            border-right: 1px solid #dbe7f3;
+            display: grid;
+            place-items: center;
+            min-height: 0;
+        }
+        .details-head .details-media img {
+            width: 100%;
+            max-width: min(285px, 100%);
+            max-height: 215px;
+            object-fit: contain;
+            filter: none;
+        }
+        .details-head .details-summary {
+            padding: 1.25rem 1.45rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.45rem;
+        }
+        .details-summary h1 {
+            margin: 0;
+            color: #0f172a;
+            font-size: clamp(1.15rem, 2vw, 1.38rem);
+            line-height: 1.2;
+        }
+        .details-summary .arabic {
+            margin: 0;
+            color: #334155;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .details-price {
+            color: #0f766e;
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-top: 0.2rem;
+        }
+        .details-install {
+            color: #475569;
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-top: 0;
+        }
+        .details-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            margin-top: 0.5rem;
+            padding-top: 0.7rem;
+            border-top: 1px solid #e5edf6;
+        }
+        .details-actions .btn {
+            border: none;
+            border-radius: 11px;
+            padding: 0.65rem 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.92rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(8, 145, 178, 0.28);
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+        .btn-ghost {
+            background: #e2e8f0;
+            color: #0f172a;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .details-specs {
+            padding: 1.15rem 1.2rem 1.2rem;
+            margin-top: 0;
+            flex: 1;
+            background: #fff;
+            border: 1px solid #dbe7f3;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        }
+        .details-specs h2 {
+            margin: 0 0 .7rem;
+            color: #0f172a;
+            font-size: 1.08rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: .55rem;
+        }
+        .specs-paper {
+            display: grid;
+            gap: .95rem;
+        }
+        .spec-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: .75rem .85rem;
+            background: #fff;
+        }
+        .spec-section h3 {
+            margin: 0 0 .55rem;
+            font-size: .95rem;
+            color: #0f172a;
+        }
+        .spec-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: .45rem;
+        }
+        .spec-line {
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: .45rem;
+        }
+        .spec-line:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .spec-line .ar {
+            margin: 0;
+            color: #1f2937;
+            font-family: 'Cairo', sans-serif;
+            font-size: .9rem;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.5;
+        }
+        .spec-line .en {
+            margin: .18rem 0 0;
+            color: #64748b;
+            font-size: .82rem;
+            line-height: 1.45;
+        }
+        .theme-toast {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 2300;
+            max-width: min(22rem, calc(100vw - 2rem));
+            background: linear-gradient(135deg, #0f766e, #0891b2);
+            color: #fff;
+            padding: 0.85rem 1.25rem;
+            border-radius: 999px;
+            box-shadow: 0 12px 28px rgba(2, 6, 23, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+            font-family: 'Poppins', system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 0.92rem;
+            line-height: 1.35;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+        .theme-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .theme-toast.error {
+            background: linear-gradient(135deg, #b91c1c, #ef4444);
+        }
+        .theme-toast.error::before,
+        .theme-toast.warning::before {
+            flex-shrink: 0;
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 1rem;
+            line-height: 1;
+            opacity: 0.95;
+        }
+        .theme-toast.error::before { content: '\f06a'; }
+        .theme-toast.warning {
+            background: linear-gradient(135deg, #0d9488, #0891b2);
+        }
+        .theme-toast.warning::before { content: '\f071'; }
+        @media (max-width: 680px) {
+            .theme-toast {
+                left: 50%;
+                right: auto;
+                bottom: max(1.25rem, calc(env(safe-area-inset-bottom, 0px) + 1rem));
+                max-width: min(20rem, calc(100vw - 1.5rem));
+                transform: translate(-50%, 12px);
+                justify-content: center;
+                text-align: center;
+            }
+            .theme-toast.show {
+                transform: translate(-50%, 0);
+            }
+        }
+        @media (max-width: 860px) {
+            .details-head { grid-template-columns: 1fr; }
+            .details-head .details-media {
+                border-right: none;
+                border-bottom: 1px solid #dbe7f3;
+            }
+            .details-wrap { margin-top: 7.3rem; }
+            .details-head .details-media img { max-height: 200px; }
+            .details-head .details-summary { padding: 0.95rem 1rem; }
+            .details-specs { padding: 1rem .85rem 1rem; }
+            .spec-section { padding: .68rem .72rem; }
+        }
+    </style>
+</head>
+<body class="site-page product-details-page">
+    <nav class="home-quick-nav site-top-nav" aria-label="Site navigation">
+        <div class="container home-quick-nav-inner">
+            <a href="index.html" class="logo home-quick-logo">
+                <img src="assets/images/infinity-logo.png" alt="" class="logo-image" width="48" height="48">
+                <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" class="nav-logo-svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0f3d52;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#5cb3d4;stop-opacity:1" />
+                            <stop offset="60%" style="stop-color:#3a8db0;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0f3d52;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="10" y="100" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="130" letter-spacing="6" fill="url(#infinityGrad)">INFINITY</text>
+                    <text x="300" y="145" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="25" letter-spacing="1" fill="#3a7a95">Total-Com Solutions</text>
+                </svg>
+                <span class="visually-hidden">INFINITY Total-Com Solutions — Home</span>
+            </a>
+            <div class="home-quick-links">
+                <a href="index.html" class="home-quick-link"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+                <a href="index.html#about" class="home-quick-link"><i class="fas fa-building" aria-hidden="true"></i> About</a>
+                <a href="index.html#mission" class="home-quick-link home-quick-link--trim"><i class="fas fa-bullseye" aria-hidden="true"></i> Mission</a>
+                <a href="index.html#services" class="home-quick-link"><i class="fas fa-wrench" aria-hidden="true"></i> Services</a>
+                <a href="products.html" class="home-quick-link is-active"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Products</a>
+                <a href="index.html#clients" class="home-quick-link home-quick-link--trim"><i class="fas fa-handshake" aria-hidden="true"></i> Clients</a>
+                <a href="team.html" class="home-quick-link" title="Our Team"><i class="fas fa-users" aria-hidden="true"></i> Team</a>
+                <a href="index.html#contact" class="home-quick-link"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Contact</a>
+            </div>
+            <div class="home-quick-nav-actions">
+                <div class="home-quick-nav-cart cart-icon" role="button" tabindex="0" aria-label="Open shopping cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+                <div class="home-account-dropdown is-guest" id="home-account-menu">
+                    <button type="button" class="home-account-toggle" id="home-account-toggle" aria-expanded="false" aria-controls="home-account-panel" aria-haspopup="true">
+                        <i class="fas fa-user home-account-toggle-icon" aria-hidden="true"></i>
+                        <span class="home-account-toggle-label">Sign In</span>
+                        <i class="fas fa-chevron-down home-account-chevron" aria-hidden="true"></i>
+                    </button>
+                    <div class="home-account-panel" id="home-account-panel" hidden>
+                        <p class="home-account-panel-title">Your account</p>
+                        <ul class="home-account-list">
+                            <li class="user-orders-link" hidden>
+                                <a href="user-dashboard.html" class="home-account-item my-orders-nav-link">
+                                    <i class="fas fa-receipt" aria-hidden="true"></i> My Orders
+                                </a>
+                            </li>
+                            <li class="staff-dashboard-link" hidden>
+                                <a href="dashboard.html" class="home-account-item dashboard-nav-link">
+                                    <i class="fas fa-chart-line" aria-hidden="true"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="home-account-signin-item" hidden>
+                                <a href="auth.html" class="home-account-item account-link">
+                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+                                </a>
+                            </li>
+                            <li class="home-account-signout-item" hidden>
+                                <button type="button" class="home-account-item home-account-signout-btn" id="home-account-signout">
+                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="details-wrap is-details-loading">
+        <div class="details-live">
+        <section class="details-head">
+            <div class="details-media"><img id="product-image" src="" alt="Product image"></div>
+            <div class="details-summary">
+                <h1 id="product-name"></h1>
+                <p class="arabic" id="product-name-ar"></p>
+                <div class="details-price" id="product-price"></div>
+                <div class="details-install" id="product-install"></div>
+                <div class="details-actions">
+                    <button id="add-to-cart" class="btn btn-primary">Add to Cart</button>
+                    <a href="products.html" class="btn btn-ghost"><i class="fas fa-arrow-left" style="margin-right:.4rem;"></i>Back to Products</a>
+                </div>
+            </div>
+        </section>
+        <section class="details-specs">
+            <h2>Specifications</h2>
+            <div id="specs-list" class="specs-paper"></div>
+        </section>
+        </div>
+    </main>
+
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button type="button" class="close-cart" aria-label="Close cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal:</span>
+                <span class="subtotal-amount">EGP 0.00</span>
+            </div>
+            <div class="cart-total">
+                <span>Installation:</span>
+                <span class="installation-amount">EGP 0.00</span>
+            </div>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-amount">EGP 0.00</span>
+            </div>
+            <button type="button" class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <div data-site-footer-mount></div>
+    <script src="site-footer.js?v=20260613"></script>
+
+    <div id="theme-toast" class="theme-toast" role="status" aria-live="polite"></div>
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="script.js?v=20260609"></script>
+    <script>
+        (function () {
+        const PRODUCT_DATA = {
+            'fmb120': {
+                name: 'GPS Tracker FMB120',
+                arabicName: 'جهاز تتبع FMB120',
+                image: 'assets/products/fmb120.png',
+                price: 3475,
+                installation: 325,
+                specSections: [
+                    {
+                        title: '1. الخصائص العامة',
+                        items: [
+                            { en: 'Manufacturer: Teltonika, Lithuania', ar: 'بلد الصنع: ليتوانيا شركة Teltonika' },
+                            { en: 'Tracking System: GPS/GSM', ar: 'نظام التتبع: GPS/GSM' },
+                            { en: 'Connectivity: GSM network support (2G/3G/4G)', ar: 'الاتصال: GSM يدعم شبكة (2G/3G/4G)' },
+                            { en: 'Battery backup works up to 12 hours if vehicle battery is disconnected', ar: 'البطارية: بطارية احتياطية تعمل حتى 12 ساعة في حالة فصل بطارية السيارة' },
+                            { en: 'Installation: Easy installation with no vehicle modifications required', ar: 'التركيب: سهل التركيب ولا يتطلب تعديلات في السيارة' },
+                            { en: 'Tracking: Real-time vehicle tracking via mobile app or computer', ar: 'التتبع: يمكن تتبع السيارة في الوقت الفعلي عبر التطبيق او الكمبيوتر' }
+                        ]
+                    },
+                    {
+                        title: '2. الميزات الفنية',
+                        items: [
+                            { en: 'Current Location: High-precision real-time vehicle location tracking', ar: 'تحديد الموقع الحالي: يمكن تحديد موقع السيارة في الوقت الحالي بدقة عالية' },
+                            { en: 'Reporting: Provides reports on speed, stops, parking, and more', ar: 'إصدار التقارير: توفير تقارير عن السرعة، الوقوف، التوقفات وغيرها' },
+                            { en: 'Fleet Management: Efficient vehicle fleet management support', ar: 'إدارة الأساطيل: يدعم إدارة أساطيل المركبات بفعالية' },
+                            { en: 'Security Alerts: Sends notifications for tampering or battery disconnection', ar: 'تنبيهات الأمان: ترسل تنبيهات في حالة العبث او فصل البطارية' },
+                            { en: 'Route History: Can retrieve vehicle route history for any past period', ar: 'استعادة خط السير: يمكن استعادة خط سير السيارة لأي فترة زمنية سابقة' }
+                        ]
+                    },
+                    {
+                        title: '3. الخدمات التي يوفرها الجهاز',
+                        items: [
+                            { en: 'Distance Report: Shows total kilometers traveled by the vehicle', ar: 'تقرير المسافة المقطوعة: تظهير عدد الكيلومترات التي يقطعها السيارة' },
+                            { en: 'Fuel Consumption Report: Provides reports on fuel consumption', ar: 'تقرير استهلاك الوقود: يوفر تقارير عن استهلاك الوقود' },
+                            { en: 'Speed Report: Shows overspeeding incidents with location and time', ar: 'تقرير السرعة الزائدة: تظهير السرعة الزائدة وأماكنها ووقتها' },
+                            { en: 'Geofencing: Ability to set geographic zones and receive alerts', ar: 'تحديد المناطق الجغرافية: إمكانية تحديد منطقة جغرافية معينة وإرسال تنبيه' },
+                            { en: 'Remote Engine Cut-off: Ability to remotely stop the vehicle engine via mobile', ar: 'إيقاف المحرك عن بعد: إمكانية إيقاف محرك السيارة عن بعد عبر الموبايل' },
+                            { en: 'Microphone: Sensitive microphone for in-vehicle listening (not currently available)', ar: 'الميكروفون: مايك حساس للاستماع داخل السيارة (لا يوجد في الوقت الحالي)' }
+                        ]
+                    }
+                ]
+            },
+            'cut-off': {
+                name: 'Cut Off Engine',
+                arabicName: 'حساس فصل المحرك',
+                image: 'assets/products/cut-off-engine.png',
+                price: 170,
+                installation: 80,
+                specs: [
+                    { en: 'Remote engine cut-off for anti-theft', ar: 'إيقاف المحرك عن بعد في حالات السرقة' },
+                    { en: 'Fast installation and reliable control', ar: 'تركيب سريع وتحكم موثوق' },
+                    { en: 'Compatible with tracking devices', ar: 'متوافق مع أجهزة التتبع' }
+                ]
+            },
+            'door-sensor': {
+                name: 'Door Sensor',
+                arabicName: 'حساس باب',
+                image: 'assets/products/door-sensor.png',
+                price: 240,
+                installation: 350,
+                specs: [
+                    { en: 'Monitors door open/close events', ar: 'يراقب فتح وغلق باب السيارة' },
+                    { en: 'Instant notification alerts', ar: 'إشعارات فورية عند الفتح والغلق' },
+                    { en: 'Supports security and trip auditing', ar: 'يدعم الأمان ومراجعة الرحلات' }
+                ]
+            },
+            'driver-button': {
+                name: 'Driver ID Button',
+                arabicName: 'حساس Button | تعريف السائق',
+                image: 'assets/products/driver-button.png',
+                price: 1220,
+                installation: 0,
+                specs: [
+                    { en: 'Driver authentication per trip', ar: 'تعريف السائق لكل رحلة' },
+                    { en: 'Improves fleet driver accountability', ar: 'يحسن متابعة السائقين في الأسطول' },
+                    { en: 'Links driver activity with vehicle usage', ar: 'ربط نشاط السائق بحركة السيارة' }
+                ]
+            }
+        };
+
+        const fallbackImage = 'assets/images/infinity-logo.png';
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id') || 'fmb120';
+        let product = PRODUCT_DATA[id]
+            ? { ...PRODUCT_DATA[id] }
+            : { name: 'Product', arabicName: '', image: fallbackImage, price: 0, installation: 0, specs: [], specSections: [] };
+
+        const imageEl = document.getElementById('product-image');
+        const specsList = document.getElementById('specs-list') || document.querySelector('.specs-paper');
+        const specsHost = document.querySelector('.details-specs');
+        const detailsWrap = document.querySelector('.details-wrap');
+
+        function showDetailsSkeleton() {
+            if (!detailsWrap || !window.InfinityLoader) return;
+            if (!detailsWrap.querySelector('.details-skeleton')) {
+                const holder = document.createElement('div');
+                holder.innerHTML = InfinityLoader.skeletonProductDetail();
+                if (holder.firstElementChild) {
+                    detailsWrap.insertBefore(holder.firstElementChild, detailsWrap.firstElementChild);
+                }
+            }
+            detailsWrap.classList.add('is-details-loading');
+        }
+
+        function hideDetailsSkeleton() {
+            detailsWrap?.classList.remove('is-details-loading');
+            detailsWrap?.querySelector('.details-skeleton')?.remove();
+        }
+
+        showDetailsSkeleton();
+
+        function sectionizeSpecs(base) {
+            const fromSections = Array.isArray(base.specSections)
+                ? base.specSections
+                    .map((sec) => ({
+                        title: sec?.title || '',
+                        items: (sec?.items || []).filter((s) => s && (s.en || s.ar))
+                    }))
+                    .filter((sec) => sec.title && sec.items.length)
+                : [];
+            if (fromSections.length) return fromSections;
+
+            const specs = Array.isArray(base.specs) ? base.specs.filter((s) => s && (s.en || s.ar)) : [];
+            if (id === 'fmb120' && specs.length > 6) {
+                return [
+                    { title: '1. الخصائص العامة', items: specs.slice(0, 6) },
+                    { title: '2. الميزات الفنية', items: specs.slice(6, 11) },
+                    { title: '3. الخدمات التي يوفرها الجهاز', items: specs.slice(11) }
+                ];
+            }
+            if (specs.length) {
+                return [{ title: '1. المواصفات الفنية', items: specs }];
+            }
+            return [];
+        }
+
+        function renderSpecs() {
+            const target = specsList || specsHost;
+            if (!target) return;
+            // Smoke marker: if you ever see nothing here, script didn't run.
+            target.innerHTML = '<div class="muted" style="padding:.6rem 0;">Loading specifications…</div>';
+            try {
+                const base = product;
+                const sections = sectionizeSpecs(base)
+                    .map((sec) => ({ ...sec, items: (sec.items || []).filter(Boolean) }))
+                    .filter((sec) => (sec.items || []).length);
+
+                const html = sections.map((section) => `
+<div class="spec-section">
+  <h3>${section.title}</h3>
+  <ul class="spec-list">
+    ${(section.items || []).map((s) => `
+    <li class="spec-line">
+      <p class="ar">&bull; ${s.ar || ''}</p>
+      <p class="en">${s.en || ''}</p>
+    </li>`).join('')}
+  </ul>
+</div>
+`).join('');
+
+                target.innerHTML = html || '<div class="muted">No specifications available.</div>';
+            } catch (e) {
+                const target = specsList || specsHost;
+                if (target) target.innerHTML = '<div class="muted">Failed to load specifications.</div>';
+            }
+        }
+
+        function setMetaTag(attrName, attrValue, content) {
+            let el = document.head.querySelector(`meta[${attrName}="${attrValue}"]`);
+            if (!el) {
+                el = document.createElement('meta');
+                el.setAttribute(attrName, attrValue);
+                document.head.appendChild(el);
+            }
+            el.setAttribute('content', content);
+        }
+
+        function updateProductSeo() {
+            const name = product.name || 'Product';
+            const pageUrl = `https://infinity-lbvn.onrender.com/product-details.html?id=${encodeURIComponent(id)}`;
+            const imagePath = product.image || fallbackImage;
+            const absoluteImage = imagePath.startsWith('http')
+                ? imagePath
+                : `https://infinity-lbvn.onrender.com/${String(imagePath).replace(/^\/+/, '')}`;
+            const description = `${name} from INFINITY Total-Com Solutions. GPS and fleet solutions available in Egypt.`;
+
+            document.title = `${name} - INFINITY Total-Com Solutions`;
+
+            let canonical = document.head.querySelector('link[rel="canonical"]');
+            if (!canonical) {
+                canonical = document.createElement('link');
+                canonical.setAttribute('rel', 'canonical');
+                document.head.appendChild(canonical);
+            }
+            canonical.setAttribute('href', pageUrl);
+
+            setMetaTag('name', 'description', description);
+            setMetaTag('property', 'og:title', `${name} - INFINITY Total-Com Solutions`);
+            setMetaTag('property', 'og:description', description);
+            setMetaTag('property', 'og:url', pageUrl);
+            setMetaTag('property', 'og:image', absoluteImage);
+            setMetaTag('name', 'twitter:title', `${name} - INFINITY Total-Com Solutions`);
+            setMetaTag('name', 'twitter:description', description);
+            setMetaTag('name', 'twitter:image', absoluteImage);
+        }
+
+        function applyProductToPage() {
+            document.getElementById('product-name').textContent = product.name;
+            document.getElementById('product-name-ar').textContent = product.arabicName || '';
+            document.getElementById('product-price').textContent = `Price: EGP ${Number(product.price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('product-install').textContent = `Installation: EGP ${Number(product.installation || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            imageEl.src = product.image || fallbackImage;
+            imageEl.alt = product.name || 'Product image';
+            updateProductSeo();
+            renderSpecs();
+        }
+
+        function mapApiProductToView(p) {
+            const apiSections = Array.isArray(p.specSections)
+                ? p.specSections
+                    .map((sec) => ({
+                        title: sec?.title || '',
+                        items: (sec?.items || []).filter((s) => s && (s.en || s.ar))
+                    }))
+                    .filter((sec) => sec.title && sec.items.length)
+                : [];
+            const apiSpecs = Array.isArray(p.specs) ? p.specs.filter((s) => s && (s.en || s.ar)) : [];
+            const fallbackSpecs = [];
+            if (p.descriptionEn || p.descriptionAr) {
+                fallbackSpecs.push({ en: p.descriptionEn || '', ar: p.descriptionAr || p.descriptionEn || '' });
+            }
+            const specSections = apiSections.length
+                ? apiSections
+                : (apiSpecs.length ? [{ title: '1. المواصفات الفنية', items: apiSpecs }] : (fallbackSpecs.length ? [{ title: '1. المواصفات الفنية', items: fallbackSpecs }] : []));
+            return {
+                name: p.name || 'Product',
+                arabicName: p.nameAr || '',
+                image: p.image || fallbackImage,
+                price: Number(p.price || 0),
+                installation: Number(p.installation || 0),
+                specs: specSections.flatMap((sec) => sec.items),
+                specSections
+            };
+        }
+
+        function mergeLiveProduct(p) {
+            if (!p || p.productId !== id) return;
+            const mapped = mapApiProductToView(p);
+            product = {
+                ...product,
+                ...mapped,
+                name: p.name || product.name,
+                arabicName: p.nameAr || product.arabicName,
+                image: p.image || product.image,
+                price: typeof p.price === 'number' ? p.price : product.price,
+                installation: typeof p.installation === 'number' ? p.installation : product.installation,
+                specSections: mapped.specSections.length ? mapped.specSections : product.specSections,
+                specs: mapped.specs.length ? mapped.specs : product.specs
+            };
+            PRODUCT_DATA[id] = { ...product };
+            applyProductToPage();
+        }
+
+        async function loadProductFromApi() {
+            try {
+                const res = await fetch(`/api/products/public/${encodeURIComponent(id)}`);
+                if (!res.ok) return;
+                const data = await res.json();
+                const p = data.product;
+                if (!p) return;
+                const mapped = mapApiProductToView(p);
+                if (!PRODUCT_DATA[id]) {
+                    product = mapped;
+                } else if (Array.isArray(p.specSections) && p.specSections.length) {
+                    product = { ...product, specSections: mapped.specSections, specs: mapped.specs };
+                }
+                PRODUCT_DATA[id] = { ...(PRODUCT_DATA[id] || {}), ...product };
+                applyProductToPage();
+            } catch (_e) { /* ignore */ }
+            finally {
+                hideDetailsSkeleton();
+            }
+        }
+
+        applyProductToPage();
+        loadProductFromApi();
+
+        // When navigating away/back, browsers may restore from bfcache and skip running scripts.
+        // Re-render on pageshow so Specifications never appears empty.
+        window.addEventListener('pageshow', async () => {
+            try {
+                await loadProductFromApi();
+                applyProductToPage();
+                renderSpecs();
+                updateCart();
+            } catch (_e) { /* ignore */ }
+        });
+
+        let cart = [];
+        let isLoggedIn = false;
+        let productStockMap = {};
+        let cartUserMutated = false;
+        let toastTimer;
+
+        const cartIcon = document.querySelector('.cart-icon');
+        const cartSidebar = document.querySelector('.cart-sidebar');
+        const closeCart = document.querySelector('.close-cart');
+        const cartItems = document.querySelector('.cart-items');
+        const subtotalAmount = document.querySelector('.subtotal-amount');
+        const installationAmount = document.querySelector('.installation-amount');
+        const totalAmount = document.querySelector('.total-amount');
+
+        function getProductImageById(productId) {
+            if (productId === id) return product.image || fallbackImage;
+            return PRODUCT_DATA[productId]?.image || fallbackImage;
+        }
+
+        function getProductArabicNameById(productId) {
+            if (productId === id) return product.arabicName || '';
+            return PRODUCT_DATA[productId]?.arabicName || '';
+        }
+
+        function normalizeCartItems(items) {
+            return (items || []).map((item) => ({
+                ...item,
+                image: item.image || getProductImageById(item.id),
+                nameAr: item.nameAr || getProductArabicNameById(item.id)
+            }));
+        }
+
+        function showThemeToast(message, isError = false, variant = '') {
+            const toast = document.getElementById('theme-toast');
+            if (!toast) return;
+            clearTimeout(toastTimer);
+            toast.textContent = message;
+            const classes = ['theme-toast', 'show'];
+            if (isError) classes.push('error');
+            else if (variant === 'warning') classes.push('warning');
+            toast.className = classes.join(' ');
+            const ms = isError || variant === 'warning' ? 3200 : 2400;
+            toastTimer = setTimeout(() => toast.classList.remove('show'), ms);
+        }
+
+        async function loadStockStatuses() {
+            try {
+                const res = await fetch('/api/products/public');
+                if (!res.ok) return;
+                const data = await res.json();
+                const products = Array.isArray(data.products) ? data.products : [];
+                productStockMap = {};
+                products.forEach((p) => {
+                    productStockMap[p.productId] = Number(p.stock || 0);
+                    mergeLiveProduct(p);
+                });
+            } catch (_e) { /* ignore */ }
+        }
+
+        async function flushPersistCart() {
+            try {
+                if (!isLoggedIn) {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    return;
+                }
+                await fetch('/api/cart', {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: cart })
+                });
+            } catch (_e) {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        }
+
+        async function loadCartFromAccount() {
+            try {
+                const userRes = await fetch('/api/user', { credentials: 'include' });
+                isLoggedIn = userRes.ok;
+                if (!isLoggedIn) {
+                    cart = normalizeCartItems(JSON.parse(localStorage.getItem('cart')) || []);
+                    cartUserMutated = false;
+                    updateCart();
+                    return;
+                }
+                const cartRes = await fetch('/api/cart', { credentials: 'include' });
+                if (!cartRes.ok) throw new Error('fail');
+                const data = await cartRes.json();
+                if (cartUserMutated) {
+                    updateCart();
+                    await flushPersistCart();
+                    cartUserMutated = false;
+                    return;
+                }
+                cart = normalizeCartItems(Array.isArray(data.items) ? data.items : []);
+                updateCart();
+                cartUserMutated = false;
+            } catch (_e) {
+                cart = normalizeCartItems(JSON.parse(localStorage.getItem('cart')) || []);
+                updateCart();
+            }
+        }
+
+        let saveTimer;
+        function persistCart(immediate) {
+            clearTimeout(saveTimer);
+            if (immediate) return flushPersistCart();
+            saveTimer = setTimeout(() => flushPersistCart(), 900);
+        }
+
+        function commitCartQtyInput(input) {
+            const pid = input.dataset.id;
+            const line = cart.find((i) => i.id === pid);
+            if (!line) return;
+            const raw = String(input.value ?? '').trim();
+            if (raw === '') {
+                updateCart();
+                return;
+            }
+            const n = parseInt(raw, 10);
+            if (!Number.isFinite(n)) {
+                updateCart();
+                return;
+            }
+            const stock = Number(productStockMap[pid] ?? Infinity);
+            if (n <= 0) {
+                cart = cart.filter((i) => i.id !== pid);
+                cartUserMutated = true;
+                updateCart();
+                persistCart(true);
+                return;
+            }
+            let next = n;
+            if (n > stock) {
+                showThemeToast('No more quantity available for this product.', false, 'warning');
+                next = stock;
+            }
+            if (next !== line.quantity) {
+                line.quantity = next;
+                cartUserMutated = true;
+                persistCart(true);
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            InfinityCart.renderCartItems(cartItems, cart, {
+                productStockMap,
+                fallbackImage,
+            });
+            InfinityCart.updateCartTotals(cart, {
+                subtotalEl: subtotalAmount,
+                installationEl: installationAmount,
+                totalEl: totalAmount,
+                countSelector: '.cart-count',
+            });
+        }
+
+        if (cartIcon) {
+            cartIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cartSidebar.classList.toggle('active');
+            });
+        }
+        closeCart.addEventListener('click', (e) => {
+            e.stopPropagation();
+            cartSidebar.classList.remove('active');
+        });
+
+        cartItems.addEventListener('change', (e) => {
+            const inp = e.target.closest('.cart-qty-input');
+            if (inp) commitCartQtyInput(inp);
+        });
+        cartItems.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter') return;
+            const inp = e.target.closest('.cart-qty-input');
+            if (inp) {
+                e.preventDefault();
+                commitCartQtyInput(inp);
+            }
+        });
+        cartItems.addEventListener('click', (e) => {
+            if (e.target.closest('.cart-qty-input')) return;
+            const qtyBtn = e.target.closest('.quantity-btn');
+            if (qtyBtn) {
+                const pid = qtyBtn.dataset.id;
+                const item = cart.find((i) => i.id === pid);
+                if (!item) return;
+                if (qtyBtn.classList.contains('plus')) {
+                    const availableStock = Number(productStockMap[pid] ?? Infinity);
+                    if (item.quantity >= availableStock) {
+                        showThemeToast('No more quantity available for this product.', false, 'warning');
+                        return;
+                    }
+                    item.quantity++;
+                } else if (qtyBtn.classList.contains('minus')) {
+                    item.quantity--;
+                    if (item.quantity === 0) cart = cart.filter((i) => i.id !== pid);
+                }
+                cartUserMutated = true;
+                updateCart();
+                persistCart(true);
+                return;
+            }
+            const removeBtn = e.target.closest('.remove-btn');
+            if (removeBtn) {
+                const pid = removeBtn.dataset.id;
+                cart = cart.filter((item) => item.id !== pid);
+                cartUserMutated = true;
+                updateCart();
+                persistCart(true);
+            }
+        });
+
+        document.querySelector('.checkout-btn').addEventListener('click', async () => {
+            if (cart.length === 0) {
+                showThemeToast('Your cart is empty.', true);
+                return;
+            }
+            try {
+                await persistCart(true);
+            } catch (_e) { /* continue */ }
+            window.location.href = 'payment.html';
+        });
+
+        document.getElementById('add-to-cart').addEventListener('click', () => {
+            const availableStock = Number(productStockMap[id] ?? Infinity);
+            const currentQtyInCart = cart.find((item) => item.id === id)?.quantity || 0;
+            if (currentQtyInCart >= availableStock) {
+                showThemeToast('No more quantity available for this product.', false, 'warning');
+                return;
+            }
+            const line = {
+                id,
+                name: product.name,
+                nameAr: product.arabicName || '',
+                price: Number(product.price || 0),
+                installation: Number(product.installation || 0),
+                image: product.image || fallbackImage,
+                quantity: 1
+            };
+            const existingItem = cart.find((item) => item.id === id);
+            if (existingItem) existingItem.quantity++;
+            else cart.push(line);
+            cartUserMutated = true;
+            updateCart();
+            persistCart(true);
+            showThemeToast('Added to cart');
+        });
+
+        loadCartFromAccount();
+        loadStockStatuses();
+        })();
+    </script>
+</body>
+</html>

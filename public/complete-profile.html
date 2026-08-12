@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Complete Profile - INFINITY</title>
+    <link rel="icon" href="assets/images/infinity-logo1.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/infinity-logo1.png">
+    <link rel="stylesheet" href="mazen.css?v=20260506-1">
+    <link rel="stylesheet" href="infinity-loader.css?v=20260607">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="form-validation.css?v=20260630">
+    <style>
+        .cp-wrap {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+            background: var(--light-gray);
+        }
+        .cp-card {
+            width: 100%;
+            max-width: 520px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: var(--box-shadow);
+            padding: 1.25rem;
+        }
+        .cp-title { margin: 0; color: var(--primary-color); font-size: 1.35rem; }
+        .cp-sub { color: var(--text-light); margin: .35rem 0 1.1rem; font-size: 0.92rem; line-height: 1.45; }
+        .cp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .85rem;
+            align-items: start;
+        }
+        .cp-group {
+            display: grid;
+            gap: .35rem;
+            align-content: start;
+            min-width: 0;
+            position: relative;
+            padding-bottom: 1.35rem;
+        }
+        .cp-group:has(.password-requirements) { padding-bottom: 0; }
+        .cp-group .field-error {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin-top: 0;
+        }
+        .cp-group.full { grid-column: 1 / -1; }
+        .cp-password-section {
+            grid-column: 1 / -1;
+            display: grid;
+            gap: .85rem;
+        }
+        .cp-group.cp-password-group {
+            padding-bottom: 0;
+        }
+        .cp-group label { font-weight: 600; color: var(--text-color); font-size: 0.9rem; }
+        .cp-group input, .cp-group select {
+            width: 100%;
+            padding: .68rem .72rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            min-height: 44px;
+            box-sizing: border-box;
+        }
+        .cp-group input:focus, .cp-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 153, 204, .12);
+        }
+        .password-field { position: relative; }
+        .password-field input { padding-right: 2.5rem; }
+        .toggle-password {
+            position: absolute;
+            right: .7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #64748b;
+            cursor: pointer;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        .cp-account-type {
+            grid-column: 1 / -1;
+            margin-bottom: .15rem;
+        }
+        .cp-account-type > span:first-child {
+            display: block;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-bottom: .45rem;
+        }
+        .cp-account-type-options {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .cp-account-type-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        .cp-account-type-option input[type="radio"] {
+            width: 1rem;
+            height: 1rem;
+            margin: 0;
+            flex-shrink: 0;
+            accent-color: var(--primary-color);
+        }
+        .cp-account-type-locked .cp-account-type-option {
+            cursor: default;
+            opacity: 0.85;
+        }
+        .cp-account-type-locked .cp-account-type-option input[type="radio"] {
+            pointer-events: none;
+        }
+        .cp-account-type-note {
+            margin: 0.35rem 0 0;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+        .cp-company-only { display: none; }
+        #complete-profile-form.cp-is-company .cp-company-only { display: grid; }
+        .cp-card.is-loading { visibility: hidden; }
+        .cp-actions { margin-top: .25rem; display: flex; gap: .6rem; flex-wrap: wrap; }
+        .cp-btn {
+            border: none;
+            border-radius: 10px;
+            padding: .7rem 1rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .cp-btn.primary { background: var(--primary-color); color: #fff; }
+        .cp-btn.ghost { background: #e2e8f0; color: #0f172a; }
+        .cp-msg {
+            margin-top: .7rem;
+            border-radius: 10px;
+            padding: .62rem .75rem;
+            display: none;
+        }
+        .cp-msg.error { display: block; background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; }
+        .cp-msg.success { display: block; background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+        @media (max-width: 560px) {
+            .cp-grid { grid-template-columns: 1fr; }
+            .cp-card { padding: 1rem; }
+            .cp-actions { flex-direction: column; }
+            .cp-btn { width: 100%; min-height: 48px; }
+            .cp-account-type-options { flex-direction: column; align-items: flex-start; gap: 0.65rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cp-wrap">
+        <div class="cp-card is-loading" id="cp-card">
+            <h2 class="cp-title">Complete Your Profile</h2>
+            <p class="cp-sub">A few details to activate your account. You can add everything else from your Profile page later.</p>
+            <form id="complete-profile-form">
+                <div class="cp-grid">
+                    <div class="cp-account-type" id="cp-account-type-wrap">
+                        <span>Account Type</span>
+                        <div class="cp-account-type-options" id="cp-account-type-options">
+                            <label class="cp-account-type-option">
+                                <input type="radio" name="cp-account-type" value="personal">
+                                Personal Account
+                            </label>
+                            <label class="cp-account-type-option">
+                                <input type="radio" name="cp-account-type" value="company">
+                                Company Account
+                            </label>
+                        </div>
+                        <p class="cp-account-type-note" id="cp-account-type-note" hidden>
+                            Account type was set during registration and cannot be changed.
+                        </p>
+                    </div>
+
+                    <div class="cp-group cp-company-only full">
+                        <label for="cp-company-name">Company Name *</label>
+                        <input id="cp-company-name" type="text" autocomplete="organization">
+                    </div>
+                    <div class="cp-group cp-company-only full">
+                        <label for="cp-company-location">Company Location *</label>
+                        <input id="cp-company-location" type="text" placeholder="City, area, or address" maxlength="200" autocomplete="organization-title">
+                    </div>
+
+                    <div class="cp-group">
+                        <label for="cp-phone">Phone Number *</label>
+                        <input id="cp-phone" type="tel" placeholder="01XXXXXXXXX" maxlength="11" inputmode="numeric" autocomplete="tel" required>
+                    </div>
+                    <div class="cp-group">
+                        <label for="cp-state">State *</label>
+                        <select id="cp-state" required>
+                            <option value="">Select State</option>
+                        </select>
+                    </div>
+
+                    <div class="cp-password-section">
+                        <div class="cp-group cp-password-group">
+                            <label for="cp-password">Set Password *</label>
+                            <div class="password-field">
+                                <input id="cp-password" type="password" required autocomplete="new-password">
+                                <button type="button" class="toggle-password" data-target="cp-password" aria-label="Show password"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="cp-group">
+                            <label for="cp-confirm-password">Confirm Password *</label>
+                            <div class="password-field">
+                                <input id="cp-confirm-password" type="password" required autocomplete="new-password">
+                                <button type="button" class="toggle-password" data-target="cp-confirm-password" aria-label="Show password"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cp-actions">
+                    <button type="submit" class="cp-btn primary" id="cp-save-btn">Save and Continue</button>
+                    <button type="button" class="cp-btn ghost" id="cp-logout-btn">Sign Out</button>
+                </div>
+                <div id="cp-message" class="cp-msg"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="infinity-loader.js?v=20260607"></script>
+    <script src="connectivity.js?v=20260607"></script>
+    <script src="form-validation.js?v=20260630"></script>
+    <script>
+        const EGYPT_STATES = [
+            "Cairo", "Giza", "Alexandria", "Qalyubia", "Dakahlia", "Red Sea", "Beheira", "Fayoum",
+            "Gharbia", "Ismailia", "Menofia", "Minya", "Qena", "Aswan", "Sohag", "Suez", "Sharqia",
+            "Assiut", "Beni Suef", "Port Said", "Damietta", "Luxor", "Matrouh", "North Sinai",
+            "South Sinai", "Kafr El Sheikh", "Monufia"
+        ];
+
+        function populateStateSelect() {
+            const sel = document.getElementById("cp-state");
+            if (!sel) return;
+            sel.innerHTML = '<option value="">Select State</option>'
+                + EGYPT_STATES.map((s) => `<option value="${s}">${s}</option>`).join("");
+        }
+
+        function resolveAccountType(value) {
+            return String(value || "").trim().toLowerCase() === "company" ? "company" : "personal";
+        }
+
+        function getSelectedAccountType() {
+            const checked = document.querySelector('input[name="cp-account-type"]:checked');
+            return resolveAccountType(checked?.value);
+        }
+
+        function applyAccountType(type) {
+            const accountType = resolveAccountType(type);
+            const form = document.getElementById("complete-profile-form");
+            if (!form) return;
+
+            const personalRadio = document.querySelector('input[name="cp-account-type"][value="personal"]');
+            const companyRadio = document.querySelector('input[name="cp-account-type"][value="company"]');
+            if (personalRadio) personalRadio.checked = accountType === "personal";
+            if (companyRadio) companyRadio.checked = accountType === "company";
+
+            form.dataset.accountType = accountType;
+            form.classList.toggle("cp-is-company", accountType === "company");
+            form.classList.toggle("cp-is-personal", accountType === "personal");
+
+            const companyName = document.getElementById("cp-company-name");
+            const companyLocation = document.getElementById("cp-company-location");
+            if (companyName) companyName.required = accountType === "company";
+            if (companyLocation) companyLocation.required = accountType === "company";
+        }
+
+        function setAccountTypeLocked(locked) {
+            const wrap = document.getElementById("cp-account-type-wrap");
+            const note = document.getElementById("cp-account-type-note");
+            const radios = document.querySelectorAll('input[name="cp-account-type"]');
+            if (wrap) wrap.classList.toggle("cp-account-type-locked", locked);
+            if (note) note.hidden = !locked;
+            radios.forEach((radio) => {
+                radio.disabled = locked;
+            });
+        }
+
+        function bindAccountTypeSwitch() {
+            document.querySelectorAll('input[name="cp-account-type"]').forEach((radio) => {
+                radio.addEventListener("change", () => {
+                    if (radio.disabled) return;
+                    applyAccountType(radio.value);
+                    if (window.FormValidation) {
+                        ["cp-company-name", "cp-company-location"].forEach((id) => {
+                            const el = document.getElementById(id);
+                            if (el) FormValidation.clearFieldError(el);
+                        });
+                    }
+                });
+            });
+        }
+
+        function showMessage(message, type = "error") {
+            const el = document.getElementById("cp-message");
+            el.textContent = message;
+            el.className = `cp-msg ${type}`;
+        }
+
+        async function ensureSessionAndNeed() {
+            const res = await fetch("/api/profile/onboarding", { credentials: "include" });
+            if (!res.ok) {
+                window.location.href = "/auth.html";
+                return null;
+            }
+            const data = await res.json();
+            const missing = Array.isArray(data?.missingProfileFields) ? data.missingProfileFields : [];
+            if (missing.length === 0) {
+                const role = data?.role || "customer";
+                window.location.href = ["employee", "manager", "primary", "technical"].includes(role) ? "/dashboard.html" : "/index.html";
+                return null;
+            }
+            applyAccountType(data.accountType);
+            setAccountTypeLocked(Boolean(data.accountTypeLocked));
+            bindAccountTypeSwitch();
+            document.getElementById("cp-card")?.classList.remove("is-loading");
+            return data;
+        }
+
+        populateStateSelect();
+
+        const completeProfileForm = document.getElementById("complete-profile-form");
+
+        (async () => {
+            const onboarding = await ensureSessionAndNeed();
+            if (!onboarding) return;
+            if (window.FormValidation && completeProfileForm) {
+                FormValidation.attachCompleteProfileValidation(completeProfileForm);
+            }
+        })();
+
+        completeProfileForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (window.FormValidation && !FormValidation.validateCompleteProfileForm(completeProfileForm)) {
+                return;
+            }
+
+            const accountType = getSelectedAccountType();
+            const payload = {
+                accountType,
+                phone: document.getElementById("cp-phone").value.replace(/\D/g, ""),
+                state: document.getElementById("cp-state").value,
+                password: document.getElementById("cp-password").value,
+            };
+
+            if (accountType === "company") {
+                payload.companyName = document.getElementById("cp-company-name").value.trim();
+                payload.companyLocation = document.getElementById("cp-company-location").value.trim();
+            }
+
+            const btn = document.getElementById("cp-save-btn");
+            const prevText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Saving...";
+            try {
+                const res = await fetch("/api/profile/complete", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    showMessage(data?.error || "Failed to save profile.", "error");
+                    return;
+                }
+                showMessage("Profile completed successfully. Redirecting...", "success");
+                const me = await fetch("/api/user", { credentials: "include" });
+                if (me.ok) {
+                    const m = await me.json();
+                    const role = m?.user?.role || "customer";
+                    setTimeout(() => {
+                        window.location.href = ["employee", "manager", "primary", "technical"].includes(role) ? "/dashboard.html" : "/index.html";
+                    }, 700);
+                } else {
+                    window.location.href = "/index.html";
+                }
+            } catch (_error) {
+                showMessage("Unexpected error. Please try again.", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = prevText;
+            }
+        });
+
+        document.getElementById("cp-logout-btn").addEventListener("click", async () => {
+            await fetch("/api/logout", { method: "POST", credentials: "include" });
+            window.location.href = "/auth.html";
+        });
+
+        function syncPasswordToggle(btn, input) {
+            const hidden = input.type === "password";
+            btn.innerHTML = hidden
+                ? '<i class="fas fa-eye-slash"></i>'
+                : '<i class="fas fa-eye"></i>';
+            btn.setAttribute("aria-label", hidden ? "Show password" : "Hide password");
+        }
+
+        document.querySelectorAll(".toggle-password").forEach((btn) => {
+            const target = document.getElementById(btn.getAttribute("data-target"));
+            if (!target) return;
+            syncPasswordToggle(btn, target);
+            btn.addEventListener("click", () => {
+                const hidden = target.type === "password";
+                target.type = hidden ? "text" : "password";
+                syncPasswordToggle(btn, target);
+            });
+        });
+    </script>
+</body>
+</html>
